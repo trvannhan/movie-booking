@@ -1,0 +1,37 @@
+<%- include('../layouts/header') %>
+
+<div class="container mt-4">
+  <h2>🔧 Admin Dashboard</h2>
+  <p>Chào mừng admin <strong><%= currentUser ? currentUser.username : '' %></strong></p>
+  <div class="row mt-4">
+    <div class="col-md-4">
+      <div class="card bg-primary text-white">
+        <div class="card-body text-center">
+          <h5>Quản lý Phim</h5>
+          <p>Thêm / Sửa / Xóa phim</p>
+          <a href="/movies" class="btn btn-light">Vào quản lý</a>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card bg-success text-white">
+        <div class="card-body text-center">
+          <h5>Lịch chiếu</h5>
+          <p>Tạo suất chiếu mới</p>
+          <a href="/showtimes" class="btn btn-light">Vào quản lý</a>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card bg-warning text-dark">
+        <div class="card-body text-center">
+          <h5>Đơn đặt vé</h5>
+          <p>Xem / Xác nhận đơn</p>
+          <a href="/admin/bookings" class="btn btn-light">Vào quản lý</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%- include('../layouts/footer') %>

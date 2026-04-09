@@ -20,5 +20,15 @@
     "mongoose": "^9.4.1",
     "multer": "^2.1.1",
     "nodemon": "^3.1.14"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/trvannhan/movie-booking.git"
+  },
+  "keywords": [],
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/trvannhan/movie-booking/issues"
+  },
+  "homepage": "https://github.com/trvannhan/movie-booking#readme"
 }
