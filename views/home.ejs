@@ -1,0 +1,88 @@
+<%- include('layouts/header') %>
+
+<!-- HERO BANNER -->
+<section class="hero-banner text-center text-white">
+  <div class="hero-overlay">
+    <div class="container py-5">
+      <h1 class="display-4 fw-bold">🎬 CineBook</h1>
+      <p class="lead fs-4">Đặt vé xem phim chỉ trong 1 phút</p>
+      <a href="/movies" class="btn btn-danger btn-lg mt-3">
+        <i class="bi bi-camera-reels"></i> Xem phim đang chiếu
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- PHIM ĐANG CHIẾU -->
+<section class="container mt-5">
+  <h2 class="section-title">
+    <i class="bi bi-fire text-danger"></i> Phim đang chiếu
+  </h2>
+  <div class="row mt-3">
+    <% if (nowShowing.length > 0) { %>
+      <% nowShowing.forEach(movie => { %>
+        <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+          <div class="card movie-card h-100 shadow-sm">
+            <img src="<%= movie.poster || '/images/no-poster.jpg' %>"
+                 class="card-img-top movie-poster" alt="<%= movie.title %>">
+            <div class="card-body">
+              <h6 class="card-title fw-bold"><%= movie.title %></h6>
+              <p class="text-muted small mb-1">
+                <i class="bi bi-clock"></i> <%= movie.duration %> phút
+              </p>
+              <p class="text-muted small">
+                <i class="bi bi-tag"></i> <%= movie.genre.join(', ') %>
+              </p>
+            </div>
+            <div class="card-footer bg-transparent border-0 pb-3">
+              <a href="/movies/<%= movie._id %>" class="btn btn-outline-danger btn-sm w-100">
+                <i class="bi bi-ticket-perforated"></i> Đặt vé
+              </a>
+            </div>
+          </div>
+        </div>
+      <% }) %>
+    <% } else { %>
+      <div class="col-12 text-center py-5">
+        <i class="bi bi-camera-reels display-1 text-muted"></i>
+        <p class="text-muted mt-3">Chưa có phim nào. Hãy thêm phim trong trang Admin!</p>
+      </div>
+    <% } %>
+  </div>
+</section>
+
+<!-- PHIM SẮP CHIẾU -->
+<section class="container mt-5">
+  <h2 class="section-title">
+    <i class="bi bi-calendar-event text-primary"></i> Phim sắp chiếu
+  </h2>
+  <div class="row mt-3">
+    <% if (comingSoon.length > 0) { %>
+      <% comingSoon.forEach(movie => { %>
+        <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+          <div class="card movie-card h-100 shadow-sm">
+            <img src="<%= movie.poster || '/images/no-poster.jpg' %>"
+                 class="card-img-top movie-poster" alt="<%= movie.title %>">
+            <div class="card-body">
+              <h6 class="card-title fw-bold"><%= movie.title %></h6>
+              <p class="text-muted small">
+                <i class="bi bi-calendar"></i> Khởi chiếu: <%= new Date(movie.releaseDate).toLocaleDateString('vi-VN') %>
+              </p>
+            </div>
+            <div class="card-footer bg-transparent border-0 pb-3">
+              <a href="/movies/<%= movie._id %>" class="btn btn-outline-primary btn-sm w-100">
+                <i class="bi bi-info-circle"></i> Xem chi tiết
+              </a>
+            </div>
+          </div>
+        </div>
+      <% }) %>
+    <% } else { %>
+      <div class="col-12 text-center py-4">
+        <p class="text-muted">Chưa có phim sắp chiếu.</p>
+      </div>
+    <% } %>
+  </div>
+</section>
+
+<%- include('layouts/footer') %>
