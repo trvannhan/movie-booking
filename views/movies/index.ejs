@@ -1,2 +1,26 @@
-<h2>Danh sách phim</h2>
-<p>Đang phát triển...</p>
+<%- include('../layouts/header') %>
+<div class="container mt-5">
+  <h2 class="mb-4">Tất Cả Phim</h2>
+  <div class="row">
+    <% if (movies.length > 0) { %>
+      <% movies.forEach(movie => { %>
+        <div class="col-md-3 mb-4">
+          <div class="card movie-card h-100 shadow-sm">
+            <img src="<%= movie.posterUrl %>" class="card-img-top movie-poster" alt="<%= movie.title %>">
+            <div class="card-body">
+              <h5 class="card-title fw-bold"><%= movie.title %></h5>
+              <p class="text-muted small mb-2"><i class="bi bi-clock"></i> <%= movie.duration %> phút</p>
+              <p class="text-muted small"><%= movie.genre.join(', ') %></p>
+            </div>
+            <div class="card-footer bg-transparent border-0 pb-3">
+              <a href="/movies/<%= movie._id %>" class="btn btn-outline-danger btn-sm w-100">Mua vé ngay</a>
+            </div>
+          </div>
+        </div>
+      <% }) %>
+    <% } else { %>
+      <p>Chưa có phim nào.</p>
+    <% } %>
+  </div>
+</div>
+<%- include('../layouts/footer') %>
