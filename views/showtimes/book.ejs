@@ -1,0 +1,185 @@
+<%- include('../layouts/header') %>
+<style>
+  .seat-map { display: flex; flex-direction: column; align-items: center; }
+  .seat-row { display: flex; gap: 8px; margin-bottom: 8px; justify-content: center; }
+  .seat {
+     width: 35px; height: 35px; border-radius: 5px; cursor: pointer;
+     display: flex; align-items: center; justify-content: center; font-size: 11px;
+     transition: all 0.2s; border: 1px solid #444; background: #2a2a4a; color: white; font-weight: bold;
+  }
+  .seat.vip { border-color: #ffc107; color: #ffc107; background: #3d3419; }
+  .seat.couple { width: 78px; border-color: #eb7198; color: #eb7198; background: #3d1c28; }
+  .seat.booked { background-color: #6c757d !important; color: white !important; cursor: not-allowed; border-color: #6c757d !important; }
+  .seat.selected { background-color: #dc3545 !important; color: white !important; border-color: #dc3545 !important; }
+  .screen-curve {
+     width: 80%; height: 40px; margin: 0 auto 30px;
+     border: 3px solid #ccc; border-radius: 50% / 100% 100% 0 0;
+     border-bottom: none; display: flex; justify-content: center; align-items: flex-end;
+  }
+  .row-number { width: 25px; display: flex; align-items: center; justify-content: center; font-weight: bold; }
+</style>
+
+<div class="container mt-4">
+  <div class="row">
+    <!-- CỘT 8: SƠ ĐỒ GHẾ -->
+    <div class="col-md-8">
+       <h4 class="mb-3">1. Chọn Ghế</h4>
+       <div class="card shadow-sm mb-4">
+          <div class="card-body">
+             <div class="screen-curve"><span class="text-muted pb-1">MÀN HÌNH</span></div>
+             
+             <div class="seat-map mt-4">
+                <% seatMap.forEach(row => { %>
+                   <div class="seat-row">
+                      <div class="row-number"><%= row.rowLetter %></div>
+                      <% row.seats.forEach(seat => { %>
+                         <div class="seat <%= seat.type %> <%= seat.isBooked ? 'booked' : '' %>"
+                              data-code="<%= seat.code %>"
+                              data-type="<%= seat.type %>"
+                              data-price="<%= seat.price %>">
+                            <%= seat.code %>
+                         </div>
+                      <% }) %>
+                      <div class="row-number"><%= row.rowLetter %></div>
+                   </div>
+                <% }) %>
+             </div>
+             
+             <div class="mt-4 d-flex justify-content-center gap-4">
+               <div><span class="seat d-inline-flex"></span> Thường</div>
+               <div><span class="seat vip d-inline-flex"></span> VIP (+15k)</div>
+               <div><span class="seat couple d-inline-flex"></span> Đôi (+30k)</div>
+               <div><span class="seat selected d-inline-flex"></span> Đang chọn</div>
+               <div><span class="seat booked d-inline-flex"></span> Đã bán</div>
+             </div>
+          </div>
+       </div>
+
+       <h4 class="mb-3">2. Chọn Bắp Nước</h4>
+       <div class="card shadow-sm mb-4 border-0">
+          <ul class="list-group list-group-flush">
+             <% services.forEach(svc => { %>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                   <div>
+                     <h6 class="mb-0"><%= svc.name %></h6>
+                     <span class="text-danger fw-bold"><%= svc.price.toLocaleString() %>đ</span>
+                   </div>
+                   <div class="d-flex align-items-center">
+                     <button type="button" class="btn btn-sm btn-outline-secondary btn-minus" data-service="<%= svc.name %>" data-price="<%= svc.price %>">-</button>
+                     <span class="mx-3 qty-label" id="qty-<%= svc.name.replace(/\s+/g,'') %>">0</span>
+                     <button type="button" class="btn btn-sm btn-outline-secondary btn-plus" data-service="<%= svc.name %>" data-price="<%= svc.price %>">+</button>
+                   </div>
+                </li>
+             <% }) %>
+          </ul>
+       </div>
+    </div>
+
+    <!-- CỘT 4: THÔNG TIN THANH TOÁN -->
+    <div class="col-md-4">
+       <div class="card shadow-sm sticky-top" style="top: 20px;">
+          <img src="<%= showtime.movieId.posterUrl %>" class="card-img-top" style="height: 200px; object-fit: cover; object-position: top;">
+          <div class="card-body">
+             <h5 class="fw-bold"><%= showtime.movieId.title %></h5>
+             <p class="text-muted small mb-3">
+               <%= showtime.cinemaId.name %> | <%= showtime.roomId.name %> <br>
+               Suất: <%= new Date(showtime.startTime).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'}) %> - <%= new Date(showtime.startTime).toLocaleDateString('vi-VN') %>
+             </p>
+             <hr>
+             <p><strong>Ghế chọn: </strong><span id="selected-seats-display" class="text-danger"></span></p>
+             <p><strong>Tiền ghế: </strong><span id="seats-total-display">0đ</span></p>
+             <p><strong>Dịch vụ: </strong><span id="services-total-display">0đ</span></p>
+             <hr>
+             <h4 class="d-flex justify-content-between text-danger">
+               Tổng cộng: <span id="grand-total-display">0đ</span>
+             </h4>
+             
+             <form action="/bookings/checkout" method="POST" id="checkout-form" class="mt-4">
+                <input type="hidden" name="showtimeId" value="<%= showtime._id %>">
+                <input type="hidden" name="ticketsData" id="ticketsData">
+                <input type="hidden" name="servicesData" id="servicesData">
+                <input type="hidden" name="totalAmount" id="totalAmount">
+                <button type="submit" class="btn btn-danger w-100 btn-lg" id="btn-checkout" disabled>Thanh Toán Bằng QR</button>
+             </form>
+          </div>
+       </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  let selectedSeats = [];
+  let selectedServices = [];
+  let grandTotal = 0;
+
+  function updateCart() {
+     let seatsTotal = 0;
+     const seatsDisplay = [];
+     selectedSeats.forEach(s => { seatsTotal += s.price; seatsDisplay.push(s.code); });
+     
+     let svcTotal = 0;
+     selectedServices.forEach(s => { svcTotal += (s.price * s.quantity); });
+     
+     grandTotal = seatsTotal + svcTotal;
+
+     document.getElementById('selected-seats-display').innerText = seatsDisplay.join(', ');
+     document.getElementById('seats-total-display').innerText = seatsTotal.toLocaleString() + 'đ';
+     document.getElementById('services-total-display').innerText = svcTotal.toLocaleString() + 'đ';
+     document.getElementById('grand-total-display').innerText = grandTotal.toLocaleString() + 'đ';
+
+     // Set hidden form vals
+     document.getElementById('ticketsData').value = JSON.stringify(selectedSeats);
+     document.getElementById('servicesData').value = JSON.stringify(selectedServices);
+     document.getElementById('totalAmount').value = grandTotal;
+
+     const btn = document.getElementById('btn-checkout');
+     if(selectedSeats.length > 0) btn.removeAttribute('disabled');
+     else btn.setAttribute('disabled', 'true');
+  }
+
+  // Handle Seat Click
+  document.querySelectorAll('.seat:not(.booked):not(.row-number)').forEach(el => {
+     el.addEventListener('click', function() {
+        const code = this.getAttribute('data-code');
+        const price = parseInt(this.getAttribute('data-price'));
+        const type = this.getAttribute('data-type');
+        
+        if (this.classList.contains('selected')) {
+           this.classList.remove('selected');
+           selectedSeats = selectedSeats.filter(s => s.code !== code);
+        } else {
+           this.classList.add('selected');
+           selectedSeats.push({ code, price, type });
+        }
+        updateCart();
+     });
+  });
+
+  // Handle Service Box
+  document.querySelectorAll('.btn-plus, .btn-minus').forEach(btn => {
+     btn.addEventListener('click', function() {
+        const name = this.getAttribute('data-service');
+        const price = parseInt(this.getAttribute('data-price'));
+        const labelId = 'qty-' + name.replace(/\s+/g,'');
+        let svcObj = selectedServices.find(s => s.name === name);
+        
+        if (!svcObj) {
+           svcObj = { name, price, quantity: 0 };
+           selectedServices.push(svcObj);
+        }
+
+        if (this.classList.contains('btn-plus')) svcObj.quantity++;
+        else if (svcObj.quantity > 0) svcObj.quantity--;
+
+        // remove if 0
+        if (svcObj.quantity === 0) {
+           selectedServices = selectedServices.filter(s => s.name !== name);
+        }
+
+        document.getElementById(labelId).innerText = svcObj.quantity;
+        updateCart();
+     });
+  });
+</script>
+
+<%- include('../layouts/footer') %>

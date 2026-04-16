@@ -50,10 +50,25 @@ body {
   display: inline-block;
 }
 
-/* ----- Movie Cards ----- */
-.movie-card {
+/* ----- General Card ----- */
+.card {
   background: #1a1a2e;
   border: 1px solid #2a2a4a;
+  color: #e0e0e0;
+}
+
+.card-header, .card-footer {
+  border-color: #2a2a4a;
+}
+
+.list-group-item {
+  background: #1a1a2e;
+  color: #e0e0e0;
+  border-color: #2a2a4a;
+}
+
+/* ----- Movie Cards ----- */
+.movie-card {
   border-radius: 12px;
   overflow: hidden;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
