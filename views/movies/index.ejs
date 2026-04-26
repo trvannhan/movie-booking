@@ -1,25 +1,69 @@
 <%- include('../layouts/header') %>
 <div class="container mt-5">
-  <h2 class="mb-4">Tất Cả Phim</h2>
+  <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-end gap-3 mb-4">
+    <div>
+      <h2 class="mb-1">Khám phá phim</h2>
+      <p class="text-secondary mb-0">Lọc theo thể loại, trạng thái và tìm phim nhanh để demo dễ hơn.</p>
+    </div>
+    <form class="row g-2 w-100 w-lg-auto" action="/movies" method="GET">
+      <div class="col-md-4">
+        <input type="text" name="search" class="form-control bg-dark text-light border-secondary" placeholder="Tìm tên phim..." value="<%= searchQuery %>">
+      </div>
+      <div class="col-md-3">
+        <select name="genre" class="form-select bg-dark text-light border-secondary">
+          <option value="">Tất cả thể loại</option>
+          <% allGenres.forEach(genre => { %>
+            <option value="<%= genre %>" <%= currentGenre === genre ? 'selected' : '' %>><%= genre %></option>
+          <% }) %>
+        </select>
+      </div>
+      <div class="col-md-3">
+        <select name="status" class="form-select bg-dark text-light border-secondary">
+          <option value="">Mọi trạng thái</option>
+          <option value="now_showing" <%= currentStatus === 'now_showing' ? 'selected' : '' %>>Đang chiếu</option>
+          <option value="coming_soon" <%= currentStatus === 'coming_soon' ? 'selected' : '' %>>Sắp chiếu</option>
+          <option value="ended" <%= currentStatus === 'ended' ? 'selected' : '' %>>Ngừng chiếu</option>
+        </select>
+      </div>
+      <div class="col-md-2 d-grid">
+        <button type="submit" class="btn btn-danger">Lọc</button>
+      </div>
+    </form>
+  </div>
+
   <div class="row">
     <% if (movies.length > 0) { %>
       <% movies.forEach(movie => { %>
-        <div class="col-md-3 mb-4">
+        <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
           <div class="card movie-card h-100 shadow-sm">
-            <img src="<%= movie.posterUrl %>" class="card-img-top movie-poster" alt="<%= movie.title %>">
+            <img src="<%= movie.posterUrl || '/images/movie-poster.svg' %>" class="card-img-top movie-poster" alt="<%= movie.title %>" onerror="this.onerror=null;this.src='/images/movie-poster.svg';">
             <div class="card-body">
-              <h5 class="card-title fw-bold"><%= movie.title %></h5>
+              <div class="d-flex justify-content-between align-items-start gap-2">
+                <h5 class="card-title fw-bold mb-2"><%= movie.title %></h5>
+                <% if (movie.status === 'now_showing') { %>
+                  <span class="badge bg-danger">Đang chiếu</span>
+                <% } else if (movie.status === 'coming_soon') { %>
+                  <span class="badge bg-primary">Sắp chiếu</span>
+                <% } else { %>
+                  <span class="badge bg-secondary">Ngừng</span>
+                <% } %>
+              </div>
               <p class="text-muted small mb-2"><i class="bi bi-clock"></i> <%= movie.duration %> phút</p>
-              <p class="text-muted small"><%= movie.genre.join(', ') %></p>
+              <p class="text-muted small mb-2"><i class="bi bi-tags"></i> <%= movie.genre.join(', ') %></p>
+              <p class="small text-secondary movie-summary"><%= (movie.description || 'Nội dung đang được cập nhật.').slice(0, 110) %>...</p>
             </div>
             <div class="card-footer bg-transparent border-0 pb-3">
-              <a href="/movies/<%= movie._id %>" class="btn btn-outline-danger btn-sm w-100">Mua vé ngay</a>
+              <a href="/movies/<%= movie._id %>" class="btn btn-outline-danger btn-sm w-100">Xem chi tiết</a>
             </div>
           </div>
         </div>
       <% }) %>
     <% } else { %>
-      <p>Chưa có phim nào.</p>
+      <div class="col-12">
+        <div class="alert alert-secondary bg-dark border-secondary text-light">
+          Không có phim nào khớp bộ lọc hiện tại.
+        </div>
+      </div>
     <% } %>
   </div>
 </div>

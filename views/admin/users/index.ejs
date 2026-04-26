@@ -1,0 +1,53 @@
+<%- include('../../layouts/header') %>
+<div class="container mt-4">
+  <div class="mb-4">
+    <h2><i class="bi bi-people text-warning"></i> Quan Ly User</h2>
+    <p class="text-secondary">Danh sach tai khoan va cap nhat vai tro de demo phan quan tri.</p>
+  </div>
+
+  <div class="card bg-dark text-light border-secondary">
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table table-dark table-hover align-middle">
+          <thead>
+            <tr>
+              <th>User</th>
+              <th>Thong tin</th>
+              <th>Ngay tao</th>
+              <th class="text-end">Vai tro</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% if (users.length === 0) { %>
+              <tr><td colspan="4" class="text-center py-4">Chua co user nao.</td></tr>
+            <% } else { %>
+              <% users.forEach(user => { %>
+                <tr>
+                  <td>
+                    <div class="fw-bold"><%= user.username %></div>
+                    <div class="small text-muted"><%= user.email %></div>
+                  </td>
+                  <td>
+                    <div><%= user.fullName || 'Chua cap nhat ho ten' %></div>
+                    <div class="small text-muted"><%= user.phone || 'Chua cap nhat so dien thoai' %></div>
+                  </td>
+                  <td><%= new Date(user.createdAt).toLocaleDateString('vi-VN') %></td>
+                  <td class="text-end">
+                    <form action="/admin/users/<%= user._id %>/role" method="POST" class="d-inline-flex gap-2">
+                      <select name="role" class="form-select form-select-sm bg-dark text-light border-secondary">
+                        <option value="user" <%= user.role === 'user' ? 'selected' : '' %>>user</option>
+                        <option value="admin" <%= user.role === 'admin' ? 'selected' : '' %>>admin</option>
+                      </select>
+                      <button type="submit" class="btn btn-sm btn-outline-warning">Cap nhat</button>
+                    </form>
+                  </td>
+                </tr>
+              <% }) %>
+            <% } %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+<%- include('../../layouts/footer') %>

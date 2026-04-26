@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="300" height="450" viewBox="0 0 300 450">
+  <defs>
+    <linearGradient id="bg" x1="0%" x2="100%" y1="0%" y2="100%">
+      <stop offset="0%" stop-color="#1a1a2e"/>
+      <stop offset="55%" stop-color="#0f3460"/>
+      <stop offset="100%" stop-color="#e94560"/>
+    </linearGradient>
+  </defs>
+  <rect width="300" height="450" rx="24" fill="url(#bg)"/>
+  <circle cx="150" cy="115" r="46" fill="rgba(255,255,255,0.08)"/>
+  <path d="M120 95h60v40h-60z" fill="#ffffff" fill-opacity="0.85"/>
+  <path d="M110 200h80" stroke="#ffffff" stroke-opacity="0.85" stroke-width="8" stroke-linecap="round"/>
+  <path d="M85 230h130" stroke="#ffffff" stroke-opacity="0.45" stroke-width="8" stroke-linecap="round"/>
+  <path d="M100 260h100" stroke="#ffffff" stroke-opacity="0.28" stroke-width="8" stroke-linecap="round"/>
+  <text x="150" y="340" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="28" font-weight="700" fill="#ffffff">CineBook</text>
+  <text x="150" y="374" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="18" fill="#f5c2cb">Movie Poster</text>
+</svg>

@@ -1,37 +1,149 @@
 <%- include('../layouts/header') %>
-
 <div class="container mt-4">
-  <h2>🔧 Admin Dashboard</h2>
-  <p>Chào mừng admin <strong><%= currentUser ? currentUser.username : '' %></strong></p>
-  <div class="row mt-4">
-    <div class="col-md-4">
-      <div class="card bg-primary text-white">
-        <div class="card-body text-center">
-          <h5>Quản lý Phim</h5>
-          <p>Thêm / Sửa / Xóa phim</p>
-          <a href="/movies" class="btn btn-light">Vào quản lý</a>
+  <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-4">
+    <div>
+      <h2 class="mb-1">Trang quan tri CineBook</h2>
+      <p class="text-secondary mb-0">Tong quan nhanh de thuyet trinh: phim, lich chieu, rap, user va doanh thu.</p>
+    </div>
+    <span class="badge bg-info text-dark fs-6 px-3 py-2">Admin: <%= currentUser ? currentUser.username : '' %></span>
+  </div>
+
+  <div class="row g-3 mb-4">
+    <div class="col-lg-3 col-md-6">
+      <div class="card border-0 shadow-sm h-100 admin-stat-card">
+        <div class="card-body">
+          <div class="small text-secondary">Tong doanh thu</div>
+          <div class="display-6 fw-bold text-danger"><%= stats.revenue.toLocaleString('vi-VN') %>d</div>
+          <div class="text-secondary small">Tu <%= stats.paidBookings %> don da thanh toan</div>
         </div>
       </div>
     </div>
-    <div class="col-md-4">
-      <div class="card bg-success text-white">
-        <div class="card-body text-center">
-          <h5>Lịch chiếu</h5>
-          <p>Tạo suất chiếu mới</p>
-          <a href="/showtimes" class="btn btn-light">Vào quản lý</a>
+    <div class="col-lg-3 col-md-6">
+      <div class="card border-0 shadow-sm h-100 admin-stat-card">
+        <div class="card-body">
+          <div class="small text-secondary">Phim</div>
+          <div class="display-6 fw-bold"><%= stats.movieCount %></div>
+          <div class="text-secondary small"><%= stats.showtimeCount %> suat chieu dang quan ly</div>
         </div>
       </div>
     </div>
-    <div class="col-md-4">
-      <div class="card bg-warning text-dark">
-        <div class="card-body text-center">
-          <h5>Đơn đặt vé</h5>
-          <p>Xem / Xác nhận đơn</p>
-          <a href="/admin/bookings" class="btn btn-light">Vào quản lý</a>
+    <div class="col-lg-3 col-md-6">
+      <div class="card border-0 shadow-sm h-100 admin-stat-card">
+        <div class="card-body">
+          <div class="small text-secondary">Rap</div>
+          <div class="display-6 fw-bold"><%= stats.cinemaCount %></div>
+          <div class="text-secondary small">Co so dang hoat dong</div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-3 col-md-6">
+      <div class="card border-0 shadow-sm h-100 admin-stat-card">
+        <div class="card-body">
+          <div class="small text-secondary">Nguoi dung</div>
+          <div class="display-6 fw-bold"><%= stats.userCount %></div>
+          <div class="text-secondary small"><%= stats.bookingCount %> booking trong he thong</div>
         </div>
       </div>
     </div>
   </div>
+
+  <div class="row g-3 mb-4">
+    <div class="col-lg-3 col-md-6">
+      <a href="/admin/movies" class="card admin-shortcut h-100 text-decoration-none">
+        <div class="card-body">
+          <div class="icon-wrap bg-danger-subtle text-danger"><i class="bi bi-film"></i></div>
+          <h5 class="mt-3">Quan ly phim</h5>
+          <p class="text-secondary mb-0">Them, sua, xoa phim va cap nhat trailer.</p>
+        </div>
+      </a>
+    </div>
+    <div class="col-lg-3 col-md-6">
+      <a href="/admin/showtimes" class="card admin-shortcut h-100 text-decoration-none">
+        <div class="card-body">
+          <div class="icon-wrap bg-success-subtle text-success"><i class="bi bi-calendar-week"></i></div>
+          <h5 class="mt-3">Lich chieu</h5>
+          <p class="text-secondary mb-0">Quan ly suat chieu va kiem tra trung lich.</p>
+        </div>
+      </a>
+    </div>
+    <div class="col-lg-3 col-md-6">
+      <a href="/admin/cinemas" class="card admin-shortcut h-100 text-decoration-none">
+        <div class="card-body">
+          <div class="icon-wrap bg-primary-subtle text-primary"><i class="bi bi-building"></i></div>
+          <h5 class="mt-3">Quan ly rap</h5>
+          <p class="text-secondary mb-0">Danh sach rap, dia chi, hinh anh va chinh sua.</p>
+        </div>
+      </a>
+    </div>
+    <div class="col-lg-3 col-md-6">
+      <a href="/admin/users" class="card admin-shortcut h-100 text-decoration-none">
+        <div class="card-body">
+          <div class="icon-wrap bg-warning-subtle text-warning"><i class="bi bi-people"></i></div>
+          <h5 class="mt-3">Quan ly user</h5>
+          <p class="text-secondary mb-0">Xem danh sach va doi vai tro user/admin.</p>
+        </div>
+      </a>
+    </div>
+  </div>
+
+  <div class="card border-0 shadow-sm">
+    <div class="card-header bg-dark border-secondary d-flex justify-content-between align-items-center">
+      <strong>Booking gan day</strong>
+      <a href="/admin/bookings" class="btn btn-sm btn-outline-light">Xem tat ca</a>
+    </div>
+    <div class="card-body">
+      <% if (recentBookings.length === 0) { %>
+        <p class="text-secondary mb-0">Chua co booking nao de hien thi.</p>
+      <% } else { %>
+        <div class="table-responsive">
+          <table class="table table-dark align-middle mb-0">
+            <thead>
+              <tr>
+                <th>Khach hang</th>
+                <th>Phim</th>
+                <th>Ve</th>
+                <th>Tong tien</th>
+                <th>Trang thai</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% recentBookings.forEach(booking => { %>
+                <tr>
+                  <td><%= booking.userId ? booking.userId.username : 'Unknown' %></td>
+                  <td><%= booking.showtimeId && booking.showtimeId.movieId ? booking.showtimeId.movieId.title : 'N/A' %></td>
+                  <td><%= booking.ticketCode || '-' %></td>
+                  <td><%= booking.totalAmount.toLocaleString('vi-VN') %>d</td>
+                  <td>
+                    <span class="badge <%= booking.status === 'paid' ? 'bg-success' : (booking.status === 'cancelled' ? 'bg-danger' : 'bg-warning text-dark') %>">
+                      <%= booking.status %>
+                    </span>
+                  </td>
+                </tr>
+              <% }) %>
+            </tbody>
+          </table>
+        </div>
+      <% } %>
+    </div>
+  </div>
 </div>
 
+<style>
+  .admin-stat-card,
+  .admin-shortcut {
+    background: linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02));
+    border: 1px solid #2a2a4a;
+    color: #fff;
+  }
+
+  .icon-wrap {
+    width: 52px;
+    height: 52px;
+    border-radius: 14px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+  }
+</style>
 <%- include('../layouts/footer') %>

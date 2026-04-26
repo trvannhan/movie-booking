@@ -1,0 +1,93 @@
+<%- include('../../layouts/header') %>
+<div class="container mt-4">
+  <div class="card bg-dark text-light border-secondary">
+    <div class="card-header border-secondary">
+      <h4 class="mb-0 text-danger"><i class="bi bi-film"></i> <%= formTitle %></h4>
+    </div>
+    <div class="card-body">
+      <form action="<%= formAction %>" method="POST" enctype="multipart/form-data">
+        <div class="row">
+          <div class="col-md-8">
+            <div class="mb-3">
+              <label class="form-label text-secondary">Tên phim</label>
+              <input type="text" class="form-control bg-dark text-light border-secondary" name="title" value="<%= movie.title || '' %>" required>
+            </div>
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label class="form-label text-secondary">Đạo diễn</label>
+                <input type="text" class="form-control bg-dark text-light border-secondary" name="director" value="<%= movie.director || '' %>">
+              </div>
+              <div class="col-md-6 mb-3">
+                <label class="form-label text-secondary">Giá cơ bản (VNĐ)</label>
+                <input type="number" class="form-control bg-dark text-light border-secondary" name="basePrice" value="<%= movie.basePrice || 70000 %>" required>
+              </div>
+            </div>
+            <div class="mb-3">
+              <label class="form-label text-secondary">Diễn viên (Cách nhau bằng dấu phẩy)</label>
+              <input type="text" class="form-control bg-dark text-light border-secondary" name="cast" value="<%= movie.cast ? movie.cast.join(', ') : '' %>">
+            </div>
+            <div class="row">
+               <div class="col-md-6 mb-3">
+                  <label class="form-label text-secondary">Thể loại</label>
+                  <input type="text" class="form-control bg-dark text-light border-secondary" name="genre" placeholder="Hành động, Hài..." value="<%= movie.genre ? movie.genre.join(', ') : '' %>">
+               </div>
+               <div class="col-md-6 mb-3">
+                  <label class="form-label text-secondary">Thời lượng (Phút)</label>
+                  <input type="number" class="form-control bg-dark text-light border-secondary" name="duration" value="<%= movie.duration || '' %>" required>
+               </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                 <label class="form-label text-secondary">Trạng thái chiếu</label>
+                  <select name="status" class="form-select bg-dark text-light border-secondary">
+                     <option value="now_showing" <%= movie.status === 'now_showing' ? 'selected' : '' %>>Đang chiếu</option>
+                     <option value="coming_soon" <%= movie.status === 'coming_soon' ? 'selected' : '' %>>Sắp chiếu</option>
+                     <option value="ended" <%= movie.status === 'ended' ? 'selected' : '' %>>Ngừng chiếu</option>
+                  </select>
+               </div>
+               <div class="col-md-6 mb-3">
+                  <label class="form-label text-secondary">Ngày khởi chiếu</label>
+                  <input type="date" class="form-control bg-dark text-light border-secondary" name="releaseDate" value="<%= movie.releaseDate ? new Date(movie.releaseDate).toISOString().split('T')[0] : '' %>">
+               </div>
+            </div>
+            <div class="row">
+               <div class="col-md-6 mb-3">
+                  <label class="form-label text-secondary">Poster URL (neu khong upload)</label>
+                  <input type="text" class="form-control bg-dark text-light border-secondary" name="posterUrl" value="<%= movie.posterUrl || '' %>" placeholder="/images/movie-poster.svg">
+               </div>
+               <div class="col-md-6 mb-3">
+                  <label class="form-label text-secondary">Trailer URL</label>
+                  <input type="text" class="form-control bg-dark text-light border-secondary" name="trailerUrl" value="<%= movie.trailerUrl || '' %>" placeholder="https://www.youtube.com/watch?v=...">
+               </div>
+            </div>
+            <div class="mb-3">
+               <label class="form-label text-secondary">Mô tả nội dung</label>
+               <textarea class="form-control bg-dark text-light border-secondary" name="description" rows="5"><%= movie.description || '' %></textarea>
+            </div>
+          </div>
+          <div class="col-md-4">
+             <div class="card bg-dark border-secondary h-100">
+                <div class="card-body">
+                   <h5 class="text-secondary">Ảnh Poster</h5>
+                   <p class="small text-muted">Hỗ trợ tải ảnh tĩnh (jpg, png, webp) từ máy tính của bạn.</p>
+                   
+                   <div class="mb-3 text-center">
+                     <img id="previewImage" src="<%= movie.posterUrl || 'https://via.placeholder.com/300x450?text=Chua+co+anh' %>" class="img-fluid rounded border border-secondary mb-3" style="max-height: 350px;">
+                   </div>
+                   
+                   <input type="file" class="form-control bg-dark text-light border-secondary" name="poster" accept="image/*" onchange="previewFile()">
+                   
+                   <div class="mt-4 d-grid">
+                      <button type="submit" class="btn btn-danger btn-lg"><i class="bi bi-save"></i> <%= submitLabel %></button>
+                      <a href="/admin/movies" class="btn btn-outline-secondary mt-2">Hủy & Quay lại</a>
+                   </div>
+                </div>
+             </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<%- include('../../layouts/footer') %>
+<script src="/js/movie-form.js"></script>

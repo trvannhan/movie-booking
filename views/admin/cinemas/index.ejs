@@ -1,0 +1,33 @@
+<%- include('../../layouts/header') %>
+<div class="container mt-4">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2><i class="bi bi-building text-primary"></i> Quan Ly Rap</h2>
+    <a href="/admin/cinemas/new" class="btn btn-primary"><i class="bi bi-plus-circle"></i> Them rap moi</a>
+  </div>
+
+  <div class="row g-3">
+    <% if (cinemas.length === 0) { %>
+      <div class="col-12">
+        <div class="alert alert-secondary bg-dark border-secondary text-light">Chua co rap nao.</div>
+      </div>
+    <% } else { %>
+      <% cinemas.forEach(cinema => { %>
+        <div class="col-lg-4 col-md-6">
+          <div class="card h-100 border-secondary">
+            <img src="<%= cinema.image || '/images/cinema-cover.svg' %>" class="card-img-top" style="height: 180px; object-fit: cover;" onerror="this.onerror=null;this.src='/images/cinema-cover.svg';" alt="<%= cinema.name %>">
+            <div class="card-body">
+              <h5 class="card-title"><%= cinema.name %></h5>
+              <p class="text-secondary mb-1"><i class="bi bi-geo-alt"></i> <%= cinema.address %></p>
+              <p class="text-secondary mb-3"><i class="bi bi-pin-map"></i> <%= cinema.city %></p>
+              <div class="d-flex gap-2">
+                <a href="/admin/cinemas/<%= cinema._id %>/edit" class="btn btn-sm btn-outline-warning">Sua</a>
+                <a href="/admin/cinemas/delete/<%= cinema._id %>" class="btn btn-sm btn-outline-danger" onclick="return confirm('Xoa rap nay?')">Xoa</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      <% }) %>
+    <% } %>
+  </div>
+</div>
+<%- include('../../layouts/footer') %>
