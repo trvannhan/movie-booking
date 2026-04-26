@@ -4,7 +4,7 @@ const cinemaSchema = new mongoose.Schema({
   name: { type: String, required: true },
   address: { type: String, required: true },
   city: { type: String, required: true },
-  image: { type: String, default: 'https://via.placeholder.com/400x200?text=Cinema' },
+  image: { type: String, default: '/images/cinema-cover.svg' },
   createdAt: { type: Date, default: Date.now }
 });
 

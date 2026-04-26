@@ -8,7 +8,7 @@ const movieSchema = new mongoose.Schema({
   genre: [{ type: String }],
   duration: { type: Number, required: true }, // Phút
   releaseDate: { type: Date },
-  posterUrl: { type: String, default: 'https://via.placeholder.com/300x450?text=Movie+Poster' },
+  posterUrl: { type: String, default: '/images/movie-poster.svg' },
   trailerUrl: { type: String },
   status: { type: String, enum: ['now_showing', 'coming_soon', 'ended'], default: 'now_showing' },
   basePrice: { type: Number, required: true, default: 70000 } // Giá tham khảo mặc định
