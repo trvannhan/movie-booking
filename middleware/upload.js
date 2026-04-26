@@ -3,12 +3,15 @@
 // ============================================
 const multer = require('multer');
 const path = require('path');
+const fs = require('fs');
 
 // Cấu hình nơi lưu + tên file
 const storage = multer.diskStorage({
   // Lưu vào thư mục public/uploads
   destination: (req, file, cb) => {
-    cb(null, path.join(__dirname, '../public/uploads'));
+    const uploadDir = path.join(__dirname, '../public/uploads');
+    fs.mkdirSync(uploadDir, { recursive: true });
+    cb(null, uploadDir);
   },
   // Đặt tên file: timestamp + tên gốc (tránh trùng)
   filename: (req, file, cb) => {
