@@ -1,0 +1,54 @@
+<%- include('../../layouts/header') %>
+<div class="container mt-4">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2><i class="bi bi-calendar3 text-success"></i> Quản Lý Lịch Chiếu</h2>
+    <a href="/admin/showtimes/new" class="btn btn-success"><i class="bi bi-plus-circle"></i> Thêm lịch chiếu mới</a>
+  </div>
+
+  <div class="card bg-dark text-light border-secondary">
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table table-dark table-hover align-middle">
+          <thead>
+            <tr>
+              <th>Phim</th>
+              <th>Rạp Tên</th>
+              <th>Phòng chiếu</th>
+              <th>Ngày / Giờ chiếu</th>
+              <th>Hệ số giá</th>
+              <th class="text-end">Hành động</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% if (showtimes.length === 0) { %>
+              <tr><td colspan="6" class="text-center py-4">Chưa có suất chiếu nào được tạo.</td></tr>
+            <% } else { %>
+              <% showtimes.forEach(st => { %>
+                <% const d = new Date(st.startTime); %>
+              <tr>
+                <td class="fw-bold"><%= st.movieId ? st.movieId.title : 'Phim đã xóa' %></td>
+                <td><%= st.cinemaId ? st.cinemaId.name : 'Rạp ảo' %></td>
+                <td><span class="badge bg-secondary"><%= st.roomId ? st.roomId.name : 'N/A' %></span></td>
+                <td>
+                   <div class="fw-bold text-warning"><%= d.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'}) %></div>
+                   <div class="small text-muted"><%= d.toLocaleDateString('vi-VN') %></div>
+                </td>
+                <td>
+                   <span class="badge <%= st.priceMultiplier > 1 ? 'bg-danger' : 'bg-primary' %>">
+                      x<%= st.priceMultiplier %>
+                   </span>
+                </td>
+                <td class="text-end">
+                  <a href="/admin/showtimes/<%= st._id %>/edit" class="btn btn-sm btn-outline-warning" title="Sửa"><i class="bi bi-pencil-square"></i></a>
+                  <a href="/admin/showtimes/delete/<%= st._id %>" class="btn btn-sm btn-outline-danger" onclick="return confirm('Bạn chắc chắn muốn hủy suất chiếu này chứ? Các vé đã báo cáo có thể bị ảnh hưởng.')" title="Xóa"><i class="bi bi-trash"></i></a>
+                </td>
+              </tr>
+              <% }) %>
+            <% } %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+<%- include('../../layouts/footer') %>

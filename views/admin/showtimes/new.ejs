@@ -1,0 +1,71 @@
+<%- include('../../layouts/header') %>
+<div class="container mt-4">
+  <div class="card bg-dark text-light border-secondary mx-auto" style="max-width: 800px;">
+    <div class="card-header border-secondary">
+      <h4 class="mb-0 text-success"><i class="bi bi-calendar-plus"></i> <%= formTitle %></h4>
+    </div>
+    <div class="card-body">
+      <form action="<%= formAction %>" method="POST">
+        
+        <div class="mb-3">
+          <label class="form-label text-secondary">Chọn Phim đang chiếu</label>
+          <select name="movieId" class="form-select bg-dark text-light border-secondary" required>
+            <% movies.forEach(m => { %>
+              <option value="<%= m._id %>" <%= String(showtime.movieId || '') === String(m._id) ? 'selected' : '' %>><%= m.title %> (Cơ bản: <%= m.basePrice.toLocaleString() %>đ)</option>
+            <% }) %>
+          </select>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label class="form-label text-secondary">Chọn Rạp nhánh</label>
+            <select name="cinemaId" id="cinemaSelect" class="form-select bg-dark text-light border-secondary" required>
+              <% cinemas.forEach(c => { %>
+                <option value="<%= c._id %>" <%= String(showtime.cinemaId || '') === String(c._id) ? 'selected' : '' %>><%= c.name %></option>
+              <% }) %>
+            </select>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label text-secondary">Chọn Phòng chiếu</label>
+            <select name="roomId" id="roomSelect" class="form-select bg-dark text-light border-secondary" required>
+              <% rooms.forEach(r => { %>
+                <option value="<%= r._id %>" data-cinema-id="<%= r.cinemaId %>" <%= String(showtime.roomId || '') === String(r._id) ? 'selected' : '' %>><%= r.name %> (<%= r.rowCount %>x<%= r.colCount %> ghế)</option>
+              <% }) %>
+            </select>
+          </div>
+        </div>
+
+        <% const startValue = showtime.startTime ? new Date(new Date(showtime.startTime).getTime() - new Date(showtime.startTime).getTimezoneOffset() * 60000).toISOString().slice(0, 16) : ''; %>
+        <% const endValue = showtime.endTime ? new Date(new Date(showtime.endTime).getTime() - new Date(showtime.endTime).getTimezoneOffset() * 60000).toISOString().slice(0, 16) : ''; %>
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label class="form-label text-secondary">Giờ Bắt đầu</label>
+            <input type="datetime-local" class="form-control bg-dark text-light border-secondary" name="startTime" value="<%= startValue %>" required>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label text-secondary">Giờ Kết thúc</label>
+            <input type="datetime-local" class="form-control bg-dark text-light border-secondary" name="endTime" value="<%= endValue %>" required>
+          </div>
+        </div>
+
+        <div class="mb-4">
+          <label class="form-label text-secondary">Hệ số giá vé (Price Multiplier)</label>
+          <select name="priceMultiplier" class="form-select bg-dark text-light border-secondary">
+            <option value="1.0" <%= Number(showtime.priceMultiplier || 1) === 1 ? 'selected' : '' %>>1.0 x (Giá chuẩn ngày thường)</option>
+            <option value="1.2" <%= Number(showtime.priceMultiplier) === 1.2 ? 'selected' : '' %>>1.2 x (Buổi tối / Cuối tuần)</option>
+            <option value="1.5" <%= Number(showtime.priceMultiplier) === 1.5 ? 'selected' : '' %>>1.5 x (Ngày lễ, Tết)</option>
+            <option value="0.8" <%= Number(showtime.priceMultiplier) === 0.8 ? 'selected' : '' %>>0.8 x (Giảm giá phim cũ)</option>
+          </select>
+          <small class="text-muted">Giá cuối = Giá phim cơ bản * Hệ số này + Phụ thu rạp (VIP/Ghế Đôi).</small>
+        </div>
+
+        <div class="d-grid mt-2">
+          <button type="submit" class="btn btn-success btn-lg"><i class="bi bi-cloud-arrow-up"></i> <%= submitLabel %></button>
+          <a href="/admin/showtimes" class="btn btn-outline-secondary mt-2">Quay lại danh sách</a>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<%- include('../../layouts/footer') %>
+<script src="/js/showtime-form.js"></script>

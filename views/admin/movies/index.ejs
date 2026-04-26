@@ -1,0 +1,53 @@
+<%- include('../../layouts/header') %>
+<div class="container mt-4">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2><i class="bi bi-film text-danger"></i> Quản Lý Phim</h2>
+    <a href="/admin/movies/new" class="btn btn-danger"><i class="bi bi-plus-circle"></i> Thêm phim mới</a>
+  </div>
+
+  <div class="card bg-dark text-light border-secondary">
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table table-dark table-hover align-middle">
+          <thead>
+            <tr>
+              <th>Poster</th>
+              <th>Tên phim</th>
+              <th>Thời lượng</th>
+              <th>Trạng thái</th>
+              <th>Giá cơ bản</th>
+              <th class="text-end">Hành động</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% if (movies.length === 0) { %>
+              <tr><td colspan="6" class="text-center py-4">Chưa có phim nào.</td></tr>
+            <% } else { %>
+              <% movies.forEach(m => { %>
+              <tr>
+                <td>
+                  <img src="<%= m.posterUrl || '/images/movie-poster.svg' %>" alt="poster" width="50" class="rounded" onerror="this.onerror=null;this.src='/images/movie-poster.svg';">
+                </td>
+                <td class="fw-bold"><%= m.title %></td>
+                <td><%= m.duration %> p</td>
+                <td>
+                  <% if(m.status === 'now_showing') { %> <span class="badge bg-success">Đang chiếu</span>
+                  <% } else if (m.status === 'coming_soon') { %> <span class="badge bg-primary">Sắp chiếu</span>
+                  <% } else { %> <span class="badge bg-secondary">Ngừng chiếu</span> <% } %>
+                </td>
+                <td><%= m.basePrice.toLocaleString() %>đ</td>
+                <td class="text-end">
+                  <a href="/movies/<%= m._id %>" target="_blank" class="btn btn-sm btn-outline-info" title="Xem trên web"><i class="bi bi-eye"></i></a>
+                  <a href="/admin/movies/<%= m._id %>/edit" class="btn btn-sm btn-outline-warning" title="Sửa"><i class="bi bi-pencil-square"></i></a>
+                  <a href="/admin/movies/delete/<%= m._id %>" class="btn btn-sm btn-outline-danger" onclick="return confirm('Xóa phim này sẽ làm mất luôn các suất chiếu liên quan. Chắc chắn xóa?')" title="Xóa"><i class="bi bi-trash"></i></a>
+                </td>
+              </tr>
+              <% }) %>
+            <% } %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+<%- include('../../layouts/footer') %>

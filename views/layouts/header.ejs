@@ -12,6 +12,11 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <!-- Custom CSS -->
   <link rel="stylesheet" href="/css/style.css">
+  <!-- ticket CSS -->
+  <link rel="stylesheet" href="/css/ticket.css">
+  <!--booking CSS -->
+  <link rel="stylesheet" href="/css/booking.css">
+
 </head>
 <body>
   <!-- NAVBAR -->
@@ -32,6 +37,14 @@
             <a class="nav-link" href="/movies"><i class="bi bi-camera-reels"></i> Phim</a>
           </li>
         </ul>
+        
+        <form class="d-flex mx-auto w-50" action="/movies" method="GET">
+          <div class="input-group">
+            <input class="form-control border-dark bg-dark text-light" type="search" name="search" placeholder="Tìm kiếm tên phim..." aria-label="Search" value="<%= locals.searchQuery || '' %>">
+            <button class="btn btn-outline-danger" type="submit"><i class="bi bi-search"></i></button>
+          </div>
+        </form>
+
         <ul class="navbar-nav">
           <% if (currentUser) { %>
             <li class="nav-item">

@@ -1,0 +1,92 @@
+<%- include('../layouts/header') %>
+<div class="container mt-5">
+  <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-4 no-print">
+    <div>
+      <h2 class="mb-1">Ve xem phim</h2>
+      <p class="text-secondary mb-0">Day la phien ban ve de demo. Ban co the in hoac luu PDF tu trinh duyet.</p>
+    </div>
+    <div class="d-flex gap-2">
+      <button class="btn btn-outline-light" onclick="window.print()">In ve / Luu PDF</button>
+      <a href="/bookings/history" class="btn btn-danger">Ve lich su dat ve</a>
+    </div>
+  </div>
+
+  <div class="ticket-shell shadow-lg">
+    <div class="ticket-main">
+      <div class="ticket-left">
+        <div class="ticket-brand">CINEBOOK E-TICKET</div>
+        <h1 class="ticket-movie-title"><%= booking.showtimeId.movieId.title %></h1>
+        <p class="ticket-meta"><%= booking.showtimeId.movieId.genre.join(' • ') %></p>
+
+        <div class="ticket-grid">
+          <div class="ticket-cell">
+            <span class="ticket-label">Rap</span>
+            <strong><%= booking.showtimeId.cinemaId.name %></strong>
+          </div>
+          <div class="ticket-cell">
+            <span class="ticket-label">Phong</span>
+            <strong><%= booking.showtimeId.roomId.name %></strong>
+          </div>
+          <div class="ticket-cell">
+            <span class="ticket-label">Suat chieu</span>
+            <strong><%= new Date(booking.showtimeId.startTime).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'}) %></strong>
+          </div>
+          <div class="ticket-cell">
+            <span class="ticket-label">Ngay chieu</span>
+            <strong><%= new Date(booking.showtimeId.startTime).toLocaleDateString('vi-VN') %></strong>
+          </div>
+          <div class="ticket-cell">
+            <span class="ticket-label">Ghe</span>
+            <strong><%= booking.tickets.map(t => t.code).join(', ') %></strong>
+          </div>
+          <div class="ticket-cell">
+            <span class="ticket-label">Tong tien</span>
+            <strong class="ticket-price"><%= booking.totalAmount.toLocaleString('vi-VN') %>d</strong>
+          </div>
+        </div>
+
+        <div class="ticket-summary">
+          <div class="summary-row">
+            <span>Ma ve</span>
+            <strong><%= booking.ticketCode %></strong>
+          </div>
+          <div class="summary-row">
+            <span>Thanh toan luc</span>
+            <strong><%= booking.paidAt ? new Date(booking.paidAt).toLocaleString('vi-VN') : 'Da xac nhan' %></strong>
+          </div>
+          <div class="summary-row">
+            <span>Tam tinh</span>
+            <strong><%= (booking.subtotalAmount || booking.totalAmount).toLocaleString('vi-VN') %>d</strong>
+          </div>
+          <div class="summary-row">
+            <span>Giam gia <%= booking.discountCode ? `(${booking.discountCode})` : '' %></span>
+            <strong>-<%= (booking.discountAmount || 0).toLocaleString('vi-VN') %>d</strong>
+          </div>
+          <% if (booking.services && booking.services.length > 0) { %>
+            <div class="summary-row">
+              <span>Combo</span>
+              <strong><%= booking.services.map(service => `${service.name} x${service.quantity}`).join(', ') %></strong>
+            </div>
+          <% } %>
+        </div>
+      </div>
+
+      <div class="ticket-divider">
+        <span class="divider-hole top"></span>
+        <span class="divider-hole bottom"></span>
+      </div>
+
+      <div class="ticket-right">
+        <img src="<%= booking.showtimeId.movieId.posterUrl || '/images/movie-poster.svg' %>" alt="<%= booking.showtimeId.movieId.title %>" class="ticket-poster" onerror="this.onerror=null;this.src='/images/movie-poster.svg';">
+        <div class="ticket-qr-wrap">
+          <img src="<%= ticketQrUrl %>" alt="Ticket QR" class="ticket-qr" onerror="this.onerror=null;this.src='/images/movie-poster.svg';">
+        </div>
+        <div class="ticket-status">DA THANH TOAN</div>
+        <small class="ticket-note">Quet ma QR tai rap de doi chieu thong tin ve.</small>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%- include('../layouts/footer') %>
+<link rel="stylesheet" href="/css/ticket.css">

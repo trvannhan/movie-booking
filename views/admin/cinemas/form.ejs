@@ -1,0 +1,33 @@
+<%- include('../../layouts/header') %>
+<div class="container mt-4">
+  <div class="card bg-dark text-light border-secondary mx-auto" style="max-width: 760px;">
+    <div class="card-header border-secondary">
+      <h4 class="mb-0 text-primary"><i class="bi bi-building-add"></i> <%= formTitle %></h4>
+    </div>
+    <div class="card-body">
+      <form action="<%= formAction %>" method="POST">
+        <div class="mb-3">
+          <label class="form-label text-secondary">Ten rap</label>
+          <input type="text" name="name" class="form-control bg-dark text-light border-secondary" value="<%= cinema.name || '' %>" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label text-secondary">Dia chi</label>
+          <input type="text" name="address" class="form-control bg-dark text-light border-secondary" value="<%= cinema.address || '' %>" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label text-secondary">Thanh pho</label>
+          <input type="text" name="city" class="form-control bg-dark text-light border-secondary" value="<%= cinema.city || '' %>" required>
+        </div>
+        <div class="mb-4">
+          <label class="form-label text-secondary">Anh banner / image URL</label>
+          <input type="text" name="image" class="form-control bg-dark text-light border-secondary" value="<%= cinema.image || '' %>" placeholder="/images/cinema-cover.svg">
+        </div>
+        <div class="d-grid">
+          <button type="submit" class="btn btn-primary btn-lg"><%= submitLabel %></button>
+          <a href="/admin/cinemas" class="btn btn-outline-secondary mt-2">Quay lai</a>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<%- include('../../layouts/footer') %>

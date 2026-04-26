@@ -23,8 +23,8 @@
       <% nowShowing.forEach(movie => { %>
         <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
           <div class="card movie-card h-100 shadow-sm">
-            <img src="<%= movie.posterUrl || '/images/no-poster.jpg' %>"
-                 class="card-img-top movie-poster" alt="<%= movie.title %>">
+            <img src="<%= movie.posterUrl || '/images/movie-poster.svg' %>"
+                 class="card-img-top movie-poster" alt="<%= movie.title %>" onerror="this.onerror=null;this.src='/images/movie-poster.svg';">
             <div class="card-body">
               <h6 class="card-title fw-bold"><%= movie.title %></h6>
               <p class="text-muted small mb-1">
@@ -61,8 +61,8 @@
       <% comingSoon.forEach(movie => { %>
         <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
           <div class="card movie-card h-100 shadow-sm">
-            <img src="<%= movie.posterUrl || '/images/no-poster.jpg' %>"
-                 class="card-img-top movie-poster" alt="<%= movie.title %>">
+            <img src="<%= movie.posterUrl || '/images/movie-poster.svg' %>"
+                 class="card-img-top movie-poster" alt="<%= movie.title %>" onerror="this.onerror=null;this.src='/images/movie-poster.svg';">
             <div class="card-body">
               <h6 class="card-title fw-bold"><%= movie.title %></h6>
               <p class="text-muted small">

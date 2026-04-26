@@ -1,28 +1,41 @@
 <%- include('../layouts/header') %>
 <div class="container mt-5">
-   <div class="row justify-content-center">
-      <div class="col-md-6 text-center">
-         <h2 class="text-danger mb-4"><i class="bi bi-qr-code-scan"></i> Thanh Toán Vé</h2>
-         
-         <div class="card shadow-lg p-4 mb-4 border-0 rounded-4">
-            <h5 class="fw-bold mb-3">Tổng Tiền: <%= booking.totalAmount.toLocaleString() %>đ</h5>
-            
-            <!-- QR CODE TỪ VIETQR -->
+   <div class="row justify-content-center g-4">
+      <div class="col-lg-5">
+         <div class="card shadow-lg p-4 border-0 rounded-4 h-100">
+            <h4 class="fw-bold mb-3">Thong tin don hang</h4>
+            <p class="mb-2"><strong>Phim:</strong> <%= booking.showtimeId.movieId.title %></p>
+            <p class="mb-2"><strong>Rap:</strong> <%= booking.showtimeId.cinemaId.name %> - <%= booking.showtimeId.roomId.name %></p>
+            <p class="mb-2"><strong>Ghe:</strong> <%= booking.tickets.map(t => t.code).join(', ') %></p>
+            <p class="mb-2"><strong>Tam tinh:</strong> <%= (booking.subtotalAmount || booking.totalAmount).toLocaleString('vi-VN') %>d</p>
+            <p class="mb-2"><strong>Giam gia:</strong> -<%= (booking.discountAmount || 0).toLocaleString('vi-VN') %>d
+              <% if (booking.discountCode) { %>
+                <span class="badge bg-warning text-dark ms-2"><%= booking.discountCode %></span>
+              <% } %>
+            </p>
+            <hr>
+            <h5 class="text-danger fw-bold">Tong thanh toan: <%= booking.totalAmount.toLocaleString('vi-VN') %>d</h5>
+            <p class="text-secondary small mb-0">Sau khi xac nhan, he thong se sinh ve dien tu de in hoac luu PDF.</p>
+         </div>
+      </div>
+
+      <div class="col-lg-5">
+         <div class="card shadow-lg p-4 border-0 rounded-4 text-center h-100">
+            <h4 class="text-danger mb-3"><i class="bi bi-qr-code-scan"></i> Thanh toan QR</h4>
             <div class="mb-3">
                <img src="<%= qrUrl %>" alt="QR Code Payment" class="img-fluid border rounded" style="max-width: 300px;">
             </div>
-            
-            <p class="text-secondary small">Mở ứng dụng ngân hàng và quét mã để thanh toán tự động.</p>
+            <p class="text-secondary small">Mo ung dung ngan hang va quet ma de thanh toan. Day la luong demo, xac nhan sau khi chuyen khoan.</p>
             <p class="bg-dark p-2 rounded small text-start">
-               <strong>Lý do: </strong>Thanh toan ve thu <%= booking._id.toString().substring(18) %>
+               <strong>Noi dung CK:</strong> Thanh toan ve <%= booking._id.toString().substring(18) %>
             </p>
-         </div>
 
-         <form action="/bookings/<%= booking._id %>/confirm" method="POST">
-            <button type="submit" class="btn btn-success btn-lg px-5 rounded-pill shadow">Đã Thanh Toán Khẩu Hoàn Tất</button>
-         </form>
-         <div class="mt-3">
-            <a href="/" class="text-muted">Hủy & Về Trang chủ</a>
+            <form action="/bookings/<%= booking._id %>/confirm" method="POST" class="mt-3">
+               <button type="submit" class="btn btn-success btn-lg px-5 rounded-pill shadow">Da thanh toan - Tao ve dien tu</button>
+            </form>
+            <div class="mt-3">
+               <a href="/bookings/history" class="text-muted">Quay lai lich su dat ve</a>
+            </div>
          </div>
       </div>
    </div>

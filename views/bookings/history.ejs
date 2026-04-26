@@ -1,0 +1,79 @@
+<%- include('../layouts/header') %>
+<div class="container mt-5">
+  <h2 class="mb-4 text-warning"><i class="bi bi-clock-history"></i> Lich su dat ve</h2>
+
+  <% if (bookings.length === 0) { %>
+    <div class="alert bg-dark text-white border-secondary text-center py-5 rounded-4">
+      <i class="bi bi-ticket-detailed display-1 text-muted"></i>
+      <h4 class="mt-3">Ban chua co giao dich nao</h4>
+      <p class="text-secondary">Hay dat ve de tao lich su giao dich va ve dien tu.</p>
+      <a href="/movies" class="btn btn-danger mt-2">Xem phim dang chieu</a>
+    </div>
+  <% } else { %>
+    <div class="row">
+      <% bookings.forEach(booking => { %>
+        <% const isPending = booking.status === 'pending'; %>
+        <div class="col-12 mb-3">
+          <div class="card shadow-sm border-secondary <%= isPending ? 'border-warning' : (booking.status === 'paid' ? 'border-success' : 'border-danger') %>">
+            <div class="row g-0">
+              <div class="col-md-2 p-2 d-flex align-items-center justify-content-center bg-dark rounded-start text-center">
+                 <% if (booking.showtimeId && booking.showtimeId.movieId) { %>
+                    <img src="<%= booking.showtimeId.movieId.posterUrl || '/images/movie-poster.svg' %>" class="img-fluid rounded" style="max-height: 120px;" alt="Poster" onerror="this.onerror=null;this.src='/images/movie-poster.svg';">
+                 <% } else { %>
+                    <span class="text-muted">Phim da bi xoa</span>
+                 <% } %>
+              </div>
+              <div class="col-md-7">
+                <div class="card-body">
+                  <h5 class="card-title fw-bold text-white mb-1">
+                    <%= booking.showtimeId && booking.showtimeId.movieId ? booking.showtimeId.movieId.title : 'Phim khong kha dung' %>
+                  </h5>
+                  <% if (booking.showtimeId) { %>
+                     <p class="text-secondary small mb-2">
+                       <i class="bi bi-geo-alt"></i> <%= booking.showtimeId.cinemaId.name %> | <%= booking.showtimeId.roomId.name %> <br>
+                       <i class="bi bi-calendar-event"></i> Suat: <%= new Date(booking.showtimeId.startTime).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'}) %> - <%= new Date(booking.showtimeId.startTime).toLocaleDateString('vi-VN') %>
+                     </p>
+                  <% } %>
+
+                  <div class="d-flex gap-3 flex-wrap">
+                     <span class="badge bg-secondary">Ghe: <%= booking.tickets.map(t => t.code).join(', ') %></span>
+                     <% if (booking.discountCode) { %>
+                       <span class="badge bg-warning text-dark">Ma giam: <%= booking.discountCode %></span>
+                     <% } %>
+                     <% if (booking.services && booking.services.length > 0) { %>
+                       <span class="badge bg-info text-dark">Combo x<%= booking.services.reduce((acc, s) => acc + s.quantity, 0) %></span>
+                     <% } %>
+                     <% if (booking.ticketCode) { %>
+                       <span class="badge bg-light text-dark">Ve: <%= booking.ticketCode %></span>
+                     <% } %>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-3 d-flex flex-column align-items-end justify-content-center p-3 border-start border-secondary">
+                <h5 class="text-danger fw-bold mb-2"><%= booking.totalAmount.toLocaleString('vi-VN') %>d</h5>
+
+                <% if (booking.status === 'paid') { %>
+                  <span class="badge bg-success px-3 py-2 mb-2"><i class="bi bi-check-circle"></i> Da thanh toan</span>
+                  <div class="d-flex gap-2">
+                    <a href="/bookings/<%= booking._id %>/ticket" class="btn btn-sm btn-outline-info">Xem ve</a>
+                  </div>
+                <% } else if (booking.status === 'cancelled') { %>
+                  <span class="badge bg-danger px-3 py-2"><i class="bi bi-x-circle"></i> Da huy</span>
+                <% } else { %>
+                  <span class="badge bg-warning text-dark px-3 py-2 mb-2"><i class="bi bi-hourglass-split"></i> Dang cho chuyen khoan</span>
+                  <div class="d-flex gap-2">
+                    <a href="/bookings/<%= booking._id %>/payment" class="btn btn-sm btn-outline-success">Mo QR</a>
+                    <a href="/bookings/cancel/<%= booking._id %>" class="btn btn-sm btn-outline-danger" onclick="return confirm('Ban chac chan muon huy don ve nay chu?')">Huy</a>
+                  </div>
+                <% } %>
+                <small class="text-muted mt-2">Ma don: #<%= booking._id.toString().slice(-6).toUpperCase() %></small>
+              </div>
+            </div>
+          </div>
+        </div>
+      <% }) %>
+    </div>
+  <% } %>
+</div>
+<%- include('../layouts/footer') %>
