@@ -7,12 +7,6 @@
             <p class="mb-2"><strong>Phim:</strong> <%= booking.showtimeId.movieId.title %></p>
             <p class="mb-2"><strong>Rap:</strong> <%= booking.showtimeId.cinemaId.name %> - <%= booking.showtimeId.roomId.name %></p>
             <p class="mb-2"><strong>Ghe:</strong> <%= booking.tickets.map(t => t.code).join(', ') %></p>
-            <p class="mb-2"><strong>Tam tinh:</strong> <%= (booking.subtotalAmount || booking.totalAmount).toLocaleString('vi-VN') %>d</p>
-            <p class="mb-2"><strong>Giam gia:</strong> -<%= (booking.discountAmount || 0).toLocaleString('vi-VN') %>d
-              <% if (booking.discountCode) { %>
-                <span class="badge bg-warning text-dark ms-2"><%= booking.discountCode %></span>
-              <% } %>
-            </p>
             <hr>
             <h5 class="text-danger fw-bold">Tong thanh toan: <%= booking.totalAmount.toLocaleString('vi-VN') %>d</h5>
             <p class="text-secondary small mb-0">Sau khi xac nhan, he thong se sinh ve dien tu de in hoac luu PDF.</p>

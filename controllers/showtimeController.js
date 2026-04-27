@@ -4,7 +4,6 @@
 const Showtime = require('../models/Showtime');
 const Booking = require('../models/Booking');
 const { SERVICE_CATALOG, buildSeatMap } = require('../utils/booking');
-const { PROMOTION_CATALOG } = require('../utils/promotions');
 
 // GET /showtimes/:id/book — Hiển thị sơ đồ ghế + dịch vụ
 exports.bookingPage = async (req, res) => {
@@ -32,8 +31,7 @@ exports.bookingPage = async (req, res) => {
       title: 'Đặt vé - Chọn ghế',
       showtime,
       seatMap,
-      services: SERVICE_CATALOG,
-      promotions: PROMOTION_CATALOG
+      services: SERVICE_CATALOG
     });
 
   } catch (err) {

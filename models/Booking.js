@@ -18,8 +18,6 @@ const bookingSchema = new mongoose.Schema({
   tickets: [seatSchema],
   services: [serviceSchema],
   subtotalAmount: { type: Number, default: 0 },
-  discountCode: { type: String, default: '' },
-  discountAmount: { type: Number, default: 0 },
   totalAmount: { type: Number, required: true },
   bookingDate: { type: Date, default: Date.now },
   status: { type: String, enum: ['pending', 'paid', 'cancelled'], default: 'pending' },

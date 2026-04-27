@@ -5,26 +5,49 @@ function syncRoomsByCinema() {
   if (!cinemaSelect || !roomSelect) return;
 
   const selectedCinema = cinemaSelect.value;
-  const roomOptions = Array.from(roomSelect.options);
-  let hasVisibleSelection = false;
+  const allOptions = Array.from(roomSelect.options);
+  let firstMatch = null;
+  let currentStillValid = false;
 
-  roomOptions.forEach(option => {
-    const matchedCinema = option.getAttribute('data-cinema-id') === selectedCinema;
-    option.hidden = !matchedCinema;
+  allOptions.forEach(option => {
+    const belongsToCinema = option.getAttribute('data-cinema-id') === selectedCinema;
+    // Dùng style.display thay vì hidden để chắc chắn không submit option ẩn
+    option.style.display = belongsToCinema ? '' : 'none';
+    option.disabled = !belongsToCinema;
 
-    if (matchedCinema && option.selected) {
-      hasVisibleSelection = true;
+    if (belongsToCinema && !firstMatch) {
+      firstMatch = option;
+    }
+    if (belongsToCinema && option.selected) {
+      currentStillValid = true;
     }
   });
 
-  if (!hasVisibleSelection) {
-    const firstVisible = roomOptions.find(option => !option.hidden);
-    if (firstVisible) firstVisible.selected = true;
+  // Nếu phòng đang chọn không thuộc rạp mới → tự động chọn phòng đầu tiên khớp
+  if (!currentStillValid) {
+    allOptions.forEach(opt => opt.selected = false);
+    if (firstMatch) {
+      firstMatch.selected = true;
+    }
+  }
+
+  // Hiện cảnh báo nếu rạp chưa có phòng nào
+  let noRoomWarning = document.getElementById('noRoomWarning');
+  if (!firstMatch) {
+    if (!noRoomWarning) {
+      noRoomWarning = document.createElement('small');
+      noRoomWarning.id = 'noRoomWarning';
+      noRoomWarning.className = 'text-danger d-block mt-1';
+      noRoomWarning.textContent = '⚠️ Rạp này chưa có phòng chiếu. Vui lòng tạo phòng chiếu trước.';
+      roomSelect.parentElement.appendChild(noRoomWarning);
+    }
+  } else if (noRoomWarning) {
+    noRoomWarning.remove();
   }
 }
 
-// tránh lỗi khi DOM chưa load
 if (cinemaSelect) {
   cinemaSelect.addEventListener('change', syncRoomsByCinema);
+  // Chạy lần đầu khi page load
   syncRoomsByCinema();
 }

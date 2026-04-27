@@ -1,4 +1,6 @@
 <%- include('../layouts/header') %>
+<!-- Tự động làm mới trang mỗi 30 giây để cập nhật trạng thái vé -->
+<meta http-equiv="refresh" content="30">
 <div class="container mt-5">
   <h2 class="mb-4 text-warning"><i class="bi bi-clock-history"></i> Lich su dat ve</h2>
 
@@ -37,9 +39,7 @@
 
                   <div class="d-flex gap-3 flex-wrap">
                      <span class="badge bg-secondary">Ghe: <%= booking.tickets.map(t => t.code).join(', ') %></span>
-                     <% if (booking.discountCode) { %>
-                       <span class="badge bg-warning text-dark">Ma giam: <%= booking.discountCode %></span>
-                     <% } %>
+
                      <% if (booking.services && booking.services.length > 0) { %>
                        <span class="badge bg-info text-dark">Combo x<%= booking.services.reduce((acc, s) => acc + s.quantity, 0) %></span>
                      <% } %>
