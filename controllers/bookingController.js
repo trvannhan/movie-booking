@@ -5,7 +5,6 @@ const mongoose = require('mongoose');
 const Booking = require('../models/Booking');
 const Showtime = require('../models/Showtime');
 const { buildSeatMap, getSeatLookup, normalizeServices } = require('../utils/booking');
-const { calculateDiscount } = require('../utils/promotions');
 const { generateTicketCode, buildTicketQrUrl } = require('../utils/ticket');
 
 // Helper: parse JSON array an toàn
@@ -22,7 +21,7 @@ const parseJsonArray = (input) => {
 // POST /bookings/checkout — Tạo đơn đặt vé mới
 exports.checkout = async (req, res) => {
   try {
-    const { showtimeId, ticketsData, servicesData, totalAmount, discountCode } = req.body;
+    const { showtimeId, ticketsData, servicesData, totalAmount } = req.body;
 
     if (!mongoose.Types.ObjectId.isValid(showtimeId)) {
       return res.status(400).send('Suat chieu khong hop le');
@@ -85,8 +84,7 @@ exports.checkout = async (req, res) => {
     const subtotalAmount = validatedTickets.reduce((sum, ticket) => sum + ticket.price, 0)
       + validatedServices.reduce((sum, service) => sum + (service.price * service.quantity), 0);
 
-    const { appliedPromotion, discountAmount } = calculateDiscount(subtotalAmount, discountCode || '');
-    const finalAmount = subtotalAmount - discountAmount;
+    const finalAmount = subtotalAmount;
 
     if (Number(totalAmount) !== finalAmount) {
       console.warn('Client total mismatch', {
@@ -103,8 +101,6 @@ exports.checkout = async (req, res) => {
       tickets: validatedTickets,
       services: validatedServices,
       subtotalAmount,
-      discountCode: appliedPromotion ? appliedPromotion.code : '',
-      discountAmount,
       totalAmount: finalAmount
     });
 

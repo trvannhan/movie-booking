@@ -164,61 +164,109 @@
   }
 
   @media print {
+    /* Ẩn navbar, footer, nút bấm */
     .navbar,
     footer,
     .no-print {
       display: none !important;
     }
 
-    body {
+    /* Reset nền trắng cho PDF */
+    html, body {
       background: #fff !important;
       color: #111 !important;
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
     }
 
-    .ticket-shell,
-    .ticket-cell,
-    .ticket-summary {
+    /* Container không bị cắt */
+    .container {
+      max-width: 100% !important;
+      padding: 0 !important;
+      margin: 0 !important;
+    }
+
+    .ticket-shell {
       background: #fff !important;
-      color: #111 !important;
-      border-color: #d1d5db !important;
+      border: 2px solid #333 !important;
+      border-radius: 12px !important;
       box-shadow: none !important;
+      page-break-inside: avoid;
+      width: 100% !important;
+      display: block !important;
     }
 
+    /* Thay đổi sang Flexbox để chống vỡ PDF */
     .ticket-main {
-      grid-template-columns: 1.7fr 28px 1fr;
-      min-height: auto;
+      display: flex !important;
+      width: 100% !important;
+      min-height: auto !important;
+    }
+
+    .ticket-left {
+      flex: 0 0 65% !important;
+      padding: 20px !important;
     }
 
     .ticket-right {
-      background: #fff !important;
+      background: #f9f9f9 !important;
+      flex: 0 0 35% !important;
+      padding: 20px !important;
+      border-left: 2px dashed #ccc !important;
+      display: flex !important;
+      flex-direction: column !important;
+      align-items: center !important;
+      justify-content: center !important;
+    }
+
+    .ticket-divider {
+      display: none !important;
+    }
+
+    .ticket-cell,
+    .ticket-summary {
+      background: #f9f9f9 !important;
+      color: #111 !important;
+      border-color: #ccc !important;
     }
 
     .ticket-brand {
-      background: #f3f4f6 !important;
+      background: #eee !important;
       color: #111 !important;
     }
 
     .ticket-movie-title,
     .ticket-price,
-    .ticket-status,
     .summary-row strong,
     .ticket-cell strong {
       color: #111 !important;
     }
 
     .ticket-status {
-      border: 1px solid #111;
+      border: 2px solid #16a34a;
       background: #fff !important;
+      color: #16a34a !important;
     }
 
     .ticket-meta,
     .ticket-note,
     .ticket-label,
     .summary-row span {
-      color: #4b5563 !important;
+      color: #555 !important;
     }
 
     .ticket-qr-wrap {
-      border: 1px solid #d1d5db;
+      border: 1px solid #ccc;
+    }
+
+    /* Đảm bảo poster hiện khi in */
+    .ticket-poster {
+      max-height: 260px;
+    }
+
+    @page {
+      size: A4 landscape;
+      margin: 15mm;
     }
   }
+

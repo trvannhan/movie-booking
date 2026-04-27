@@ -37,9 +37,9 @@
                 </td>
                 <td><%= m.basePrice.toLocaleString() %>đ</td>
                 <td class="text-end">
-                  <a href="/movies/<%= m._id %>" target="_blank" class="btn btn-sm btn-outline-info" title="Xem trên web"><i class="bi bi-eye"></i></a>
+                  <a href="/movies/<%= m._id %>" class="btn btn-sm btn-outline-info" title="Xem trên web"><i class="bi bi-eye"></i></a>
                   <a href="/admin/movies/<%= m._id %>/edit" class="btn btn-sm btn-outline-warning" title="Sửa"><i class="bi bi-pencil-square"></i></a>
-                  <a href="/admin/movies/delete/<%= m._id %>" class="btn btn-sm btn-outline-danger" onclick="return confirm('Xóa phim này sẽ làm mất luôn các suất chiếu liên quan. Chắc chắn xóa?')" title="Xóa"><i class="bi bi-trash"></i></a>
+                  <a href="#" class="btn btn-sm btn-outline-danger" title="Xóa" onclick="deleteMovie('<%= m._id %>')"><i class="bi bi-trash"></i></a>
                 </td>
               </tr>
               <% }) %>
@@ -50,4 +50,20 @@
     </div>
   </div>
 </div>
+<script>
+async function deleteMovie(id) {
+  if (!confirm('Xóa phim này? Nếu phim còn suất chiếu, bạn cần xóa suất chiếu trước.')) return;
+  try {
+    const res = await fetch('/admin/movies/delete/' + id);
+    if (res.ok) {
+      window.location.reload();
+    } else {
+      const text = await res.text();
+      alert('⚠️ ' + text);
+    }
+  } catch (err) {
+    alert('Lỗi kết nối server');
+  }
+}
+</script>
 <%- include('../../layouts/footer') %>

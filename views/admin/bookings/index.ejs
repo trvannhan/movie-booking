@@ -40,16 +40,10 @@
                      <% if (b.ticketCode) { %>
                        <span class="badge bg-info text-dark">Ve: <%= b.ticketCode %></span>
                      <% } %>
-                     <% if (b.discountCode) { %>
-                       <span class="badge bg-warning text-dark">GG: <%= b.discountCode %></span>
-                     <% } %>
                    </div>
                 </td>
                 <td>
                    <strong class="text-danger"><%= b.totalAmount.toLocaleString() %>đ</strong>
-                   <% if (b.discountAmount) { %>
-                     <div class="small text-muted">-<%= b.discountAmount.toLocaleString() %>đ</div>
-                   <% } %>
                 </td>
                 <td>
                   <% if (b.status === 'paid') { %>

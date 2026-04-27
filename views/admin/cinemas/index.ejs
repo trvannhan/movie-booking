@@ -21,7 +21,7 @@
               <p class="text-secondary mb-3"><i class="bi bi-pin-map"></i> <%= cinema.city %></p>
               <div class="d-flex gap-2">
                 <a href="/admin/cinemas/<%= cinema._id %>/edit" class="btn btn-sm btn-outline-warning">Sua</a>
-                <a href="/admin/cinemas/delete/<%= cinema._id %>" class="btn btn-sm btn-outline-danger" onclick="return confirm('Xoa rap nay?')">Xoa</a>
+                <a href="#" class="btn btn-sm btn-outline-danger" onclick="deleteCinema('<%= cinema._id %>')">Xoa</a>
               </div>
             </div>
           </div>
@@ -30,4 +30,20 @@
     <% } %>
   </div>
 </div>
+<script>
+async function deleteCinema(id) {
+  if (!confirm('Xóa rạp này? Tất cả phòng chiếu thuộc rạp cũng sẽ bị xóa.')) return;
+  try {
+    const res = await fetch('/admin/cinemas/delete/' + id);
+    if (res.ok) {
+      window.location.reload();
+    } else {
+      const text = await res.text();
+      alert('⚠️ ' + text);
+    }
+  } catch (err) {
+    alert('Lỗi kết nối server');
+  }
+}
+</script>
 <%- include('../../layouts/footer') %>

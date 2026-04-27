@@ -1,4 +1,5 @@
 <%- include('../layouts/header') %>
+<link rel="stylesheet" href="/css/ticket.css">
 <div class="container mt-5">
   <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-4 no-print">
     <div>
@@ -54,14 +55,7 @@
             <span>Thanh toan luc</span>
             <strong><%= booking.paidAt ? new Date(booking.paidAt).toLocaleString('vi-VN') : 'Da xac nhan' %></strong>
           </div>
-          <div class="summary-row">
-            <span>Tam tinh</span>
-            <strong><%= (booking.subtotalAmount || booking.totalAmount).toLocaleString('vi-VN') %>d</strong>
-          </div>
-          <div class="summary-row">
-            <span>Giam gia <%= booking.discountCode ? `(${booking.discountCode})` : '' %></span>
-            <strong>-<%= (booking.discountAmount || 0).toLocaleString('vi-VN') %>d</strong>
-          </div>
+
           <% if (booking.services && booking.services.length > 0) { %>
             <div class="summary-row">
               <span>Combo</span>
@@ -89,4 +83,3 @@
 </div>
 
 <%- include('../layouts/footer') %>
-<link rel="stylesheet" href="/css/ticket.css">

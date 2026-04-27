@@ -1,0 +1,48 @@
+<%- include('../../layouts/header') %>
+<div class="container mt-4">
+  <div class="card bg-dark text-light border-secondary mx-auto" style="max-width: 760px;">
+    <div class="card-header border-secondary">
+      <h4 class="mb-0 text-info"><i class="bi bi-door-open"></i> <%= formTitle %></h4>
+    </div>
+    <div class="card-body">
+      <form action="<%= formAction %>" method="POST">
+        <div class="mb-3">
+          <label class="form-label text-secondary">Thuoc rap</label>
+          <select name="cinemaId" class="form-select bg-dark text-light border-secondary" required>
+            <option value="">-- Chon rap --</option>
+            <% cinemas.forEach(c => { %>
+              <option value="<%= c._id %>" <%= room.cinemaId && room.cinemaId.toString() === c._id.toString() ? 'selected' : '' %>><%= c.name %></option>
+            <% }) %>
+          </select>
+        </div>
+        <div class="mb-3">
+          <label class="form-label text-secondary">Ten phong</label>
+          <input type="text" name="name" class="form-control bg-dark text-light border-secondary" value="<%= room.name || '' %>" placeholder="VD: Phong 1 (Standard)" required>
+        </div>
+        <div class="row g-3 mb-3">
+          <div class="col-md-6">
+            <label class="form-label text-secondary">So hang ghe (rowCount)</label>
+            <input type="number" name="rowCount" class="form-control bg-dark text-light border-secondary" value="<%= room.rowCount || 10 %>" min="1" max="26" required>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label text-secondary">So cot ghe (colCount)</label>
+            <input type="number" name="colCount" class="form-control bg-dark text-light border-secondary" value="<%= room.colCount || 12 %>" min="1" max="30" required>
+          </div>
+        </div>
+        <div class="mb-3">
+          <label class="form-label text-secondary">Hang VIP <small>(cach nhau boi dau phay, VD: E,F,G)</small></label>
+          <input type="text" name="vipRows" class="form-control bg-dark text-light border-secondary" value="<%= room.vipRows ? room.vipRows.join(',') : '' %>" placeholder="E,F,G">
+        </div>
+        <div class="mb-4">
+          <label class="form-label text-secondary">Hang Couple <small>(cach nhau boi dau phay, VD: J)</small></label>
+          <input type="text" name="coupleRows" class="form-control bg-dark text-light border-secondary" value="<%= room.coupleRows ? room.coupleRows.join(',') : '' %>" placeholder="J">
+        </div>
+        <div class="d-grid">
+          <button type="submit" class="btn btn-info btn-lg"><%= submitLabel %></button>
+          <a href="/admin/rooms" class="btn btn-outline-secondary mt-2">Quay lai</a>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<%- include('../../layouts/footer') %>

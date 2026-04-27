@@ -1,0 +1,62 @@
+<%- include('../../layouts/header') %>
+<div class="container mt-4">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2><i class="bi bi-door-open text-info"></i> Quan Ly Phong Chieu</h2>
+    <a href="/admin/rooms/new" class="btn btn-info"><i class="bi bi-plus-circle"></i> Them phong moi</a>
+  </div>
+
+  <div class="card bg-dark text-light border-secondary">
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table table-dark table-hover align-middle">
+          <thead>
+            <tr>
+              <th>Ten phong</th>
+              <th>Rap</th>
+              <th>Kich thuoc (hang x cot)</th>
+              <th>Hang VIP</th>
+              <th>Hang Couple</th>
+              <th class="text-end">Thao tac</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% if (rooms.length === 0) { %>
+              <tr><td colspan="6" class="text-center py-4">Chua co phong chieu nao.</td></tr>
+            <% } else { %>
+              <% rooms.forEach(room => { %>
+              <tr>
+                <td><strong><%= room.name %></strong></td>
+                <td><%= room.cinemaId ? room.cinemaId.name : 'N/A' %></td>
+                <td><%= room.rowCount %> x <%= room.colCount %> (<%= room.rowCount * room.colCount %> ghe)</td>
+                <td><span class="badge bg-warning text-dark"><%= room.vipRows.join(', ') || '-' %></span></td>
+                <td><span class="badge bg-danger"><%= room.coupleRows.join(', ') || '-' %></span></td>
+                <td class="text-end">
+                  <a href="/admin/rooms/<%= room._id %>/edit" class="btn btn-sm btn-outline-warning"><i class="bi bi-pencil"></i></a>
+                  <a href="#" class="btn btn-sm btn-outline-danger" onclick="deleteRoom('<%= room._id %>')"><i class="bi bi-trash"></i></a>
+                </td>
+              </tr>
+              <% }) %>
+            <% } %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+async function deleteRoom(id) {
+  if (!confirm('Ban chac chan muon xoa phong chieu nay?')) return;
+  try {
+    const res = await fetch('/admin/rooms/delete/' + id);
+    if (res.ok) {
+      window.location.reload();
+    } else {
+      const text = await res.text();
+      alert('⚠️ ' + text);
+    }
+  } catch (err) {
+    alert('Loi ket noi server');
+  }
+}
+</script>
+<%- include('../../layouts/footer') %>

@@ -67,31 +67,6 @@
           </ul>
        </div>
 
-       <h4 class="mb-3">3. Ma giam gia</h4>
-       <div class="card shadow-sm mb-4 border-0">
-          <div class="card-body">
-            <div class="row g-3 align-items-center">
-              <div class="col-md-8">
-                <input type="text" id="discountCodeInput" class="form-control bg-dark text-light border-secondary">
-              </div>
-              <div class="col-md-4 d-grid">
-                <button type="button" id="btn-apply-promo" class="btn btn-outline-warning">Ap dung ma</button>
-              </div>
-            </div>
-
-            <div class="mt-3 d-flex flex-wrap gap-2">
-              <% promotions.forEach(promo => { %>
-                <button type="button"
-                        class="btn btn-sm btn-outline-light promo-chip"
-                        data-code="<%= promo.code %>">
-                  <%= promo.code %>
-                </button>
-              <% }) %>
-            </div>
-
-            <small class="text-secondary d-block mt-2" id="promo-message"></small>
-          </div>
-       </div>
     </div>
 
     <div class="col-md-4">
@@ -110,8 +85,6 @@
              <p><strong>Ghe: </strong><span id="selected-seats-display"></span></p>
              <p><strong>Tien ghe: </strong><span id="seats-total-display">0d</span></p>
              <p><strong>Dich vu: </strong><span id="services-total-display">0d</span></p>
-             <p><strong>Tam tinh: </strong><span id="subtotal-display">0d</span></p>
-             <p><strong>Giam gia: </strong><span id="discount-display">0d</span></p>
 
              <hr>
 
@@ -123,7 +96,6 @@
                 <input type="hidden" name="showtimeId" value="<%= showtime._id %>">
                 <input type="hidden" id="ticketsData" name="ticketsData">
                 <input type="hidden" id="servicesData" name="servicesData">
-                <input type="hidden" id="discountCode" name="discountCode">
                 <input type="hidden" id="totalAmount" name="totalAmount">
 
                 <button type="submit" id="btn-checkout" class="btn btn-danger w-100" disabled>
