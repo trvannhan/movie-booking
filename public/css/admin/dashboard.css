@@ -1,0 +1,260 @@
+/* =========================
+   ADMIN DASHBOARD STYLES
+========================= */
+
+.admin-stat-card,
+.admin-shortcut {
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.05),
+    rgba(255, 255, 255, 0.02)
+  );
+  border: 1px solid #2a2a4a;
+  color: #fff;
+  transition: all 0.3s ease;
+}
+
+.admin-shortcut:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.25);
+}
+
+.icon-wrap {
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+}
+
+.table td,
+.table th {
+  vertical-align: middle;
+}
+
+@media (max-width: 767px) {
+  .display-6 {
+    font-size: 1.75rem;
+  }
+
+  .icon-wrap {
+    width: 46px;
+    height: 46px;
+    font-size: 1.25rem;
+  }
+} /* =========================
+   ADMIN DASHBOARD — REFINED
+   - All styles for admin dashboard UI
+   - Dark theme, compact, responsive
+========================= */
+
+:root {
+  --card-bg: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.04),
+    rgba(255, 255, 255, 0.02)
+  );
+  --card-border: rgba(255, 255, 255, 0.06);
+  --muted-contrast: rgba(255, 255, 255, 0.72);
+  --accent: #ff6b6b;
+  --glass: rgba(255, 255, 255, 0.02);
+}
+
+.dashboard-root {
+  padding-top: 18px;
+  padding-bottom: 28px;
+}
+
+/* Header */
+.dashboard-header {
+  gap: 12px;
+}
+.dashboard-title {
+  font-size: 1.6rem;
+  margin: 0;
+  color: #fff;
+}
+.dashboard-subtitle {
+  color: var(--muted-contrast);
+  margin-top: 2px;
+  font-size: 0.95rem;
+}
+.admin-badge {
+  background: #e9f7ff;
+  color: #0a2540;
+  padding: 6px 10px;
+  border-radius: 8px;
+  font-weight: 600;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-top: 12px;
+}
+.stat-card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  padding: 18px;
+  border-radius: 12px;
+  min-height: 120px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.stat-label {
+  color: var(--muted-contrast);
+  font-size: 0.9rem;
+}
+.stat-value {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #fff;
+}
+.stat-note {
+  font-size: 0.9rem;
+  color: var(--muted-contrast);
+}
+.stat-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
+}
+
+
+.quick-actions {
+  margin-top: 6px;
+}
+.quick-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 14px;
+}
+.quick-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  padding: 14px;
+  border-radius: 12px;
+  background: var(--glass);
+  border: 1px solid rgba(255, 255, 255, 0.03);
+  color: #fff;
+  min-height: 110px;
+}
+.quick-card .icon-wrap {
+  width: 48px;
+  height: 48px;
+  border-radius: 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  margin-bottom: 10px;
+}
+.quick-title {
+  font-weight: 600;
+  font-size: 0.98rem;
+}
+.quick-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.45);
+}
+
+@media (max-width: 1200px) {
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .quick-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+@media (max-width: 768px) {
+  .stats-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  .quick-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+
+.recent-card {
+  border-radius: 12px;
+  overflow: hidden;
+}
+.recent-table-wrap {
+  max-height: 300px;
+  overflow: auto;
+}
+.recent-table thead th {
+  color: var(--muted-contrast);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+}
+.recent-table tbody tr {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.02);
+}
+
+.badge-paid {
+  background: linear-gradient(90deg, #17a14b, #15903e);
+  color: #fff;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-weight: 600;
+}
+.badge-cancelled {
+  background: #b23b3b;
+  color: #fff;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-weight: 600;
+}
+.badge-pending {
+  background: #ffc107;
+  color: #111;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-weight: 700;
+}
+
+
+.recent-table td,
+.recent-table th {
+  padding: 10px 12px;
+  vertical-align: middle;
+}
+
+/* Small tweaks */
+.admin-shortcut {
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease;
+}
+.admin-stat-card {
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
+
+.icon-wrap {
+  width: 48px;
+  height: 48px;
+  border-radius: 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+}
+
+
+@media (min-width: 1400px) {
+  .dashboard-root {
+    padding-left: 32px;
+    padding-right: 32px;
+  }
+}

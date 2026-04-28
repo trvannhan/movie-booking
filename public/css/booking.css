@@ -1,3 +1,18 @@
+.booking-code {
+  color: rgba(255,255,255,0.85);
+  display: inline-block;
+  font-weight:600;
+}
+
+.admin-booking-meta {
+  color: rgba(255,255,255,0.72);
+  font-size: 0.9rem;
+}
+
+.booking-code.small, .admin-booking-meta.small { font-size: 0.85rem; }
+
+
+.table-dark .badge { opacity: 0.98; }
 .seat-map {
   display: flex;
   flex-direction: column;
