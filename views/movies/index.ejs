@@ -66,5 +66,37 @@
       </div>
     <% } %>
   </div>
+  <nav class="mt-4 d-flex justify-content-center">
+  <ul class="pagination">
+
+    <% if ((currentPage || 1) > 1) { %>
+      <li class="page-item">
+        <a class="page-link bg-dark text-light border-secondary"
+           href="/movies?page=<%= currentPage - 1 %>&search=<%= searchQuery %>&genre=<%= currentGenre %>&status=<%= currentStatus %>">
+          Prev
+        </a>
+      </li>
+    <% } %>
+
+    <% for(let i = 1; i <= (totalPages || 1); i++) { %>
+      <li class="page-item <%= i === currentPage ? 'active' : '' %>">
+        <a class="page-link bg-dark text-light border-secondary"
+           href="/movies?page=<%= i %>&search=<%= searchQuery %>&genre=<%= currentGenre %>&status=<%= currentStatus %>">
+          <%= i %>
+        </a>
+      </li>
+    <% } %>
+
+    <% if (currentPage < totalPages) { %>
+      <li class="page-item">
+        <a class="page-link bg-dark text-light border-secondary"
+           href="/movies?page=<%= currentPage + 1 %>&search=<%= searchQuery %>&genre=<%= currentGenre %>&status=<%= currentStatus %>">
+          Next
+        </a>
+      </li>
+    <% } %>
+
+  </ul>
+</nav>
 </div>
 <%- include('../layouts/footer') %>

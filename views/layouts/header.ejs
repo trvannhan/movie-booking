@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title><%= title %> | CineBook</title>
+  <title><%= title || 'CineBook' %></title>
   <!-- Bootstrap 5 -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <!-- Bootstrap Icons -->
@@ -20,8 +20,8 @@
 </head>
 <body>
   <!-- NAVBAR -->
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div class="container">
+<nav class="navbar navbar-expand-lg navbar-dark cine-navbar">
+  <div class="container-fluid px-4">
       <a class="navbar-brand fw-bold" href="/">
         <i class="bi bi-film"></i> CineBook
       </a>
@@ -38,7 +38,7 @@
           </li>
         </ul>
         
-        <form class="d-flex mx-auto w-50" action="/movies" method="GET">
+        <form class="cine-search mx-auto" action="/movies" method="GET">
           <div class="input-group">
             <input class="form-control border-dark bg-dark text-light" type="search" name="search" placeholder="Tìm kiếm tên phim..." aria-label="Search" value="<%= locals.searchQuery || '' %>">
             <button class="btn btn-outline-danger" type="submit"><i class="bi bi-search"></i></button>
