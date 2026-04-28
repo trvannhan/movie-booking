@@ -1,118 +1,91 @@
 <%- include('../layouts/header') %>
-<div class="container mt-4">
-  <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-4">
+<link rel="stylesheet" href="/css/admin/dashboard.css">
+
+<div class="container dashboard-root">
+
+  <!-- SECTION A: Header -->
+  <div class="dashboard-header d-flex align-items-start justify-content-between mb-3">
     <div>
-      <h2 class="mb-1">Trang quan tri CineBook</h2>
-      <p class="text-secondary mb-0">Tong quan nhanh de thuyet trinh: phim, lich chieu, rap, user va doanh thu.</p>
+      <h1 class="dashboard-title mb-1">Trang quản trị CineBook</h1>
+      <p class="dashboard-subtitle mb-0">Tổng quan: phim, lịch chiếu, rạp, phòng và doanh thu</p>
     </div>
-    <span class="badge bg-info text-dark fs-6 px-3 py-2">Admin: <%= currentUser ? currentUser.username : '' %></span>
-  </div>
-
-  <div class="row g-3 mb-4">
-    <div class="col-lg-3 col-md-6">
-      <div class="card border-0 shadow-sm h-100 admin-stat-card">
-        <div class="card-body">
-          <div class="small text-secondary">Tong doanh thu</div>
-          <div class="display-6 fw-bold text-danger"><%= stats.revenue.toLocaleString('vi-VN') %>d</div>
-          <div class="text-secondary small">Tu <%= stats.paidBookings %> don da thanh toan</div>
-        </div>
-      </div>
-    </div>
-    <div class="col-lg-3 col-md-6">
-      <div class="card border-0 shadow-sm h-100 admin-stat-card">
-        <div class="card-body">
-          <div class="small text-secondary">Phim</div>
-          <div class="display-6 fw-bold"><%= stats.movieCount %></div>
-          <div class="text-secondary small"><%= stats.showtimeCount %> suat chieu dang quan ly</div>
-        </div>
-      </div>
-    </div>
-    <div class="col-lg-3 col-md-6">
-      <div class="card border-0 shadow-sm h-100 admin-stat-card">
-        <div class="card-body">
-          <div class="small text-secondary">Rap</div>
-          <div class="display-6 fw-bold"><%= stats.cinemaCount %></div>
-          <div class="text-secondary small"><%= stats.roomCount %> phong chieu dang hoat dong</div>
-        </div>
-      </div>
-    </div>
-    <div class="col-lg-3 col-md-6">
-      <div class="card border-0 shadow-sm h-100 admin-stat-card">
-        <div class="card-body">
-          <div class="small text-secondary">Nguoi dung</div>
-          <div class="display-6 fw-bold"><%= stats.userCount %></div>
-          <div class="text-secondary small"><%= stats.bookingCount %> booking trong he thong</div>
-        </div>
-      </div>
+    <div class="ms-3 align-self-center">
+      <span class="badge admin-badge">Admin: <%= currentUser ? currentUser.username : '' %></span>
     </div>
   </div>
 
-  <div class="row g-3 mb-4">
-    <div class="col-lg-3 col-md-6">
-      <a href="/admin/movies" class="card admin-shortcut h-100 text-decoration-none">
-        <div class="card-body">
-          <div class="icon-wrap bg-danger-subtle text-danger"><i class="bi bi-film"></i></div>
-          <h5 class="mt-3">Quan ly phim</h5>
-          <p class="text-secondary mb-0">Them, sua, xoa phim va cap nhat trailer.</p>
-        </div>
-      </a>
+  <!-- SECTION B: 4 Stat Cards -->
+  <div class="stats-grid mb-4">
+    <div class="stat-card admin-stat-card">
+      <div class="stat-label">Tổng doanh thu</div>
+      <div class="stat-value text-danger"><%= (stats.revenue || 0).toLocaleString('vi-VN') %>d</div>
+      <div class="stat-note">Từ <strong><%= stats.paidBookings || 0 %></strong> đơn đã thanh toán</div>
     </div>
-    <div class="col-lg-3 col-md-6">
-      <a href="/admin/showtimes" class="card admin-shortcut h-100 text-decoration-none">
-        <div class="card-body">
-          <div class="icon-wrap bg-success-subtle text-success"><i class="bi bi-calendar-week"></i></div>
-          <h5 class="mt-3">Lich chieu</h5>
-          <p class="text-secondary mb-0">Quan ly suat chieu va kiem tra trung lich.</p>
-        </div>
-      </a>
+
+    <div class="stat-card admin-stat-card">
+      <div class="stat-label">Phim</div>
+      <div class="stat-value"><%= stats.movieCount || 0 %></div>
+      <div class="stat-note"><%= stats.showtimeCount || 0 %> suất đang quản lý</div>
     </div>
-    <div class="col-lg-3 col-md-6">
-      <a href="/admin/cinemas" class="card admin-shortcut h-100 text-decoration-none">
-        <div class="card-body">
-          <div class="icon-wrap bg-primary-subtle text-primary"><i class="bi bi-building"></i></div>
-          <h5 class="mt-3">Quan ly rap</h5>
-          <p class="text-secondary mb-0">Danh sach rap, dia chi, hinh anh va chinh sua.</p>
-        </div>
-      </a>
+
+    <div class="stat-card admin-stat-card">
+      <div class="stat-label">Rạp</div>
+      <div class="stat-value"><%= stats.cinemaCount || 0 %></div>
+      <div class="stat-note"><%= stats.roomCount || 0 %> phòng chiếu</div>
     </div>
-    <div class="col-lg-3 col-md-6">
-      <a href="/admin/rooms" class="card admin-shortcut h-100 text-decoration-none">
-        <div class="card-body">
-          <div class="icon-wrap bg-info-subtle text-info"><i class="bi bi-door-open"></i></div>
-          <h5 class="mt-3">Phong chieu</h5>
-          <p class="text-secondary mb-0">Quan ly phong chieu, so do ghe VIP va Couple.</p>
-        </div>
-      </a>
+
+    <div class="stat-card admin-stat-card">
+      <div class="stat-label">Người dùng</div>
+      <div class="stat-value"><%= stats.userCount || 0 %></div>
+      <div class="stat-note"><%= stats.bookingCount || 0 %> booking trong hệ thống</div>
     </div>
-    <div class="col-lg-3 col-md-6">
-      <a href="/admin/users" class="card admin-shortcut h-100 text-decoration-none">
-        <div class="card-body">
-          <div class="icon-wrap bg-warning-subtle text-warning"><i class="bi bi-people"></i></div>
-          <h5 class="mt-3">Quan ly user</h5>
-          <p class="text-secondary mb-0">Xem danh sach va doi vai tro user/admin.</p>
-        </div>
+  </div>
+
+  <!-- SECTION C: Quick Actions -->
+  <div class="quick-actions mb-4">
+    <div class="quick-grid">
+      <a href="/admin/movies" class="quick-card admin-shortcut">
+        <div class="icon-wrap bg-danger-subtle text-danger"><i class="bi bi-film"></i></div>
+        <div class="quick-title">Quản lý phim</div>
+      </a>
+      <a href="/admin/showtimes" class="quick-card admin-shortcut">
+        <div class="icon-wrap bg-success-subtle text-success"><i class="bi bi-calendar-week"></i></div>
+        <div class="quick-title">Lịch chiếu</div>
+      </a>
+      <a href="/admin/cinemas" class="quick-card admin-shortcut">
+        <div class="icon-wrap bg-primary-subtle text-primary"><i class="bi bi-building"></i></div>
+        <div class="quick-title">Quản lý rạp</div>
+      </a>
+      <a href="/admin/rooms" class="quick-card admin-shortcut">
+        <div class="icon-wrap bg-info-subtle text-info"><i class="bi bi-door-open"></i></div>
+        <div class="quick-title">Phòng chiếu</div>
+      </a>
+      <a href="/admin/users" class="quick-card admin-shortcut">
+        <div class="icon-wrap bg-warning-subtle text-warning"><i class="bi bi-people"></i></div>
+        <div class="quick-title">Người dùng</div>
       </a>
     </div>
   </div>
 
-  <div class="card border-0 shadow-sm">
+  <!-- SECTION D: Recent Bookings -->
+  <div class="card recent-card border-0 shadow-sm">
     <div class="card-header bg-dark border-secondary d-flex justify-content-between align-items-center">
-      <strong>Booking gan day</strong>
-      <a href="/admin/bookings" class="btn btn-sm btn-outline-light">Xem tat ca</a>
+      <strong>Booking gần đây</strong>
+      <a href="/admin/bookings" class="btn btn-sm btn-outline-light">Xem tất cả</a>
     </div>
     <div class="card-body">
-      <% if (recentBookings.length === 0) { %>
-        <p class="text-secondary mb-0">Chua co booking nao de hien thi.</p>
+      <% if (!recentBookings || recentBookings.length === 0) { %>
+        <p class="text-muted mb-0">Chưa có booking nào để hiển thị.</p>
       <% } else { %>
-        <div class="table-responsive">
-          <table class="table table-dark align-middle mb-0">
+        <div class="table-responsive recent-table-wrap">
+          <table class="table table-dark align-middle mb-0 recent-table">
             <thead>
               <tr>
-                <th>Khach hang</th>
+                <th>Khách hàng</th>
                 <th>Phim</th>
-                <th>Ve</th>
-                <th>Tong tien</th>
-                <th>Trang thai</th>
+                <th>Vé</th>
+                <th>Tổng tiền</th>
+                <th>Trạng thái</th>
               </tr>
             </thead>
             <tbody>
@@ -121,11 +94,15 @@
                   <td><%= booking.userId ? booking.userId.username : 'Unknown' %></td>
                   <td><%= booking.showtimeId && booking.showtimeId.movieId ? booking.showtimeId.movieId.title : 'N/A' %></td>
                   <td><%= booking.ticketCode || '-' %></td>
-                  <td><%= booking.totalAmount.toLocaleString('vi-VN') %>d</td>
+                  <td><%= (booking.totalAmount || 0).toLocaleString('vi-VN') %>d</td>
                   <td>
-                    <span class="badge <%= booking.status === 'paid' ? 'bg-success' : (booking.status === 'cancelled' ? 'bg-danger' : 'bg-warning text-dark') %>">
-                      <%= booking.status %>
-                    </span>
+                    <% if (booking.status === 'paid') { %>
+                      <span class="badge badge-paid">Đã thanh toán</span>
+                    <% } else if (booking.status === 'cancelled') { %>
+                      <span class="badge badge-cancelled">Đã hủy</span>
+                    <% } else { %>
+                      <span class="badge badge-pending">Chờ xử lý</span>
+                    <% } %>
                   </td>
                 </tr>
               <% }) %>
@@ -135,24 +112,7 @@
       <% } %>
     </div>
   </div>
+
 </div>
 
-<style>
-  .admin-stat-card,
-  .admin-shortcut {
-    background: linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02));
-    border: 1px solid #2a2a4a;
-    color: #fff;
-  }
-
-  .icon-wrap {
-    width: 52px;
-    height: 52px;
-    border-radius: 14px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.5rem;
-  }
-</style>
 <%- include('../layouts/footer') %>

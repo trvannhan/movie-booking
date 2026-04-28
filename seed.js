@@ -239,7 +239,7 @@ async function seedData() {
         cast: ["Sam Worthington", "Zoe Saldana"],
         genre: ["Sci-Fi", "Phieu luu"],
         duration: 192,
-        trailerUrl: "https://www.youtube.com/watch?v=nb_fFfxNHaA",
+        trailerUrl: "https://youtu.be/-6pMes1L3cs?si=q7vVd6FNZQROggL7",
         posterUrl: "/posters/avatar-3.jpg",
         status: "coming_soon",
         basePrice: 95000,
